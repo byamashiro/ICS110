@@ -3,7 +3,9 @@
 Analytical Question
 =========================
 -Is the maximum proton flux at Earth correlated to the intensity of solar flares on the Sun?
--Are properties of interplanetary space, such as solar wind speed or temperature, indicators of maximum proton flux at Earth?\n
+
+-Are properties of interplanetary space, such as solar wind speed or temperature, indicators of maximum proton flux at Earth?
+
 -What are the statistical deviations from the background during intense solar events?
 
 Data
