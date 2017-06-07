@@ -56,7 +56,7 @@ run first_script.py
 
 
 --Running bash alias in ipython (~/.ipython/profile_default/ipython_config.py)
-'''
+
 import re
 import os.path
 
@@ -72,7 +72,7 @@ with open(os.path.expanduser('~/.bashrc')) as bashrc:
                 aliases.append((source, target))
 
     c.AliasManager.user_aliases = aliases
-'''
+
 
 Lesson 3 (2017-05-30)
 ======================
