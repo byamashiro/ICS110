@@ -293,7 +293,7 @@ my_heroes = aliases2.split()      # Default is to split on whitespace
 print(my_heroes)
 >> ['catwoman', 'robin', 'aquaman', 'superman', 'batman']
 
-
+--Use the wildcard when unpacking 'king arthur' *stuff, can you average all of *stuff?
 
 
 
