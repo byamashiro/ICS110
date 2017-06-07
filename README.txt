@@ -68,17 +68,85 @@ with open(os.path.expanduser('~/.bashrc')) as bashrc:
 
     c.AliasManager.user_aliases = aliases
 
-
-Lesson 3 (2017-05-30)
-======================
-
-6
+5: Strings
 ===========
-To download a zip of the folder in Github (http://kinolien.github.io/gitzip/)
+---Attempt to use Bokeh over matplotlib (http://bokeh.pydata.org/en/latest/docs/gallery.html)
+-Slider options
+-Look up how to read in datetime elements from file
+-Subplots relating to eachother
+    -"Lined plots" example, "stocks"
 
 
 
-Is there a way to look at a specific pattern in text files without reading in the remainder? (i.e 2011-08-09 in a year worth of data)
+--Specify strings with ''
+var = 'string'
+>>> string
+
+--Raw strings
+print(r'blah blah') #r before the ''
+
+
+--Escape characters
+\'   \"   \t   \n   \\
+
+
+--Multiline strings
+''' - triple quotes preserve natural new lines and leading spaces...
+
+--Testing string characteristics
+.isalpha(), .isalnum(), .isdecimal(), isspace(), .istitle(), .isupper(), .islower(), .startswith(), .endswith()
+
+--String manipulation
+.join(), .split(), .rjust(), .ljust(), .center(), .strip(), .rstrip(), .lstrip()
+
+--String Formatting (https://pyformat.info)
+positionals = '{1} {0}'.format('last', 'first')
+name = '{first} {last}'.format(first='blah', last='bleh')
+
+
+left_align = '{:20}'.format('blah') #alignment
+left_align = '{:<20}'.format('blah')
+right_align = '{:>20}'.format('blah')
+center_align = '{:^20}'.format('blah')
+
+
+6: Files
+===========
+--Writing to a file
+fout = open('folder/output.txt', 'w')      # 'w' - write, 'r' - read
+fout.write('''1
+2
+3''')
+fout.close()
+
+--Reading lines
+* 'read()'                     # reads the file in as a single string
+* 'readline()'                 # reads in one line at a time
+* 'readlines()'                # reads in all lines, as separate strings in a list 
+* 'for line in <filehandle>:'  # iterates over each line, one at a time
+
+--Reading in patterns
+data = open('folder/log_file.header.csv')
+header = data.readline()
+for line in data:
+    if 'kara' in line:
+        print(line)
+    else:
+        print('N/A')
+
+data = open('folder/names.txt')
+lineNum = 0
+for line in data:
+    lineNum += 1
+    if line.startswith('S'):
+        cleanline = line.rstrip() # Let's get rid of that pesky newline
+        print(lineNum, cleanline)
+
+
+--To download a .zip of the folder in Github (http://kinolien.github.io/gitzip/)
+
+
+--Is there a way to look at a specific pattern in text files without reading in the remainder? (i.e 2011-08-09 in a year worth of data)
 
 7
 ===========
