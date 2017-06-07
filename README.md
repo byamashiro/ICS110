@@ -1,7 +1,3 @@
-# ICS110
-
-Notes
-=========================
 Lesson 1 (2017-05-25)
 ======================
 --Setting up conda environment in a folder
@@ -56,7 +52,6 @@ run first_script.py
 
 
 --Running bash alias in ipython (~/.ipython/profile_default/ipython_config.py)
-
 import re
 import os.path
 
@@ -79,6 +74,10 @@ Lesson 3 (2017-05-30)
 
 6
 ===========
+To download a zip of the folder in Github (http://kinolien.github.io/gitzip/)
+
+
+
 Is there a way to look at a specific pattern in text files without reading in the remainder? (i.e 2011-08-09 in a year worth of data)
 
 7
