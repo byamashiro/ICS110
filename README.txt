@@ -82,24 +82,23 @@ Is there a way to look at a specific pattern in text files without reading in th
 
 7
 ===========
+--Why does the second for loop work, what is the syntax behind 'index,weapon'?
 weapons = ['sword', 'axe', 'bow', 'dagger']
 
 for index in range(len(weapons)):
     print('Weapon: ' + weapons[index] + '\t Indexed as ' + str(index))  
-    
 for index, weapon in enumerate(weapons):
     print('WEAPON: ' + weapon + '\t INDEXED as ' + str(index))
 
 
 
-why does assigning things to lists make them point to a value of None?
+--why does assigning things to lists make them point to a value of None?
 items ['a', 'b', 'c']
 items = items.sort()
 >> items = items
 
 
 
-difference between append and extend
-
+--The difference between list.append()  and list.extend(), append adds a single element.
 
 
