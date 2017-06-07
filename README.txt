@@ -1,4 +1,4 @@
-Lesson 1 (2017-05-25)
+1: Basics and Installation
 ======================
 --Setting up conda environment in a folder
 Miniconda (https://conda.io/docs/install/quick.html)
@@ -26,7 +26,7 @@ alias icsenv='cd /Users/bryanyamashiro/Desktop/ICS/classUH;source /Users/bryanya
 -- The ';' allows to run a series of commands
 
 
-Lesson 2 (2017-05-26)
+2: Booleans, if/else
 ======================
 !more newfile.txt
 --in ipython, emulates vi command on command line
@@ -67,6 +67,68 @@ with open(os.path.expanduser('~/.bashrc')) as bashrc:
                 aliases.append((source, target))
 
     c.AliasManager.user_aliases = aliases
+
+
+3: Functions
+==========
+def print_stats():
+    print('HP: 100')
+    print('Mana: 50')
+    print('Stamina: 35')
+print_stats()
+
+
+def attack(strength, weapon='sword'):
+    print("Your strength is", strength, 'and you used a', weapon)
+attack('high', 'dagger')
+attack('low', weapon='spear')
+
+
+def identify(weapon):
+    if weapon == 'sword':
+        return 'It attacks swiftly'
+output = identify('sword')
+print(output)
+
+4: Loops
+==========
+--while loops
+ipaddresses = 5
+while ipaddresses <= 13:
+    print('Scanning!', ipaddresses)
+    ipaddresses = ipaddresses + 1 
+
+while True: #with a break statement
+-allows for a continuous loop until 'break'
+while True:
+    response = input('What would you like to do? ')
+    if response == 'quit':
+        break
+    if response == 'q':
+        break
+print('You have quit')
+
+-without a 'break' statement
+response = input('What starter value do you want for response? ')
+while response != 'quit':
+    response = input('Sometimes this never shows: what new value for response do you want? ')
+print('You have quit')
+
+--for loops (creates a temporary variable)
+for number in range(3):
+    print(number)
+
+total = 0
+for pips in range(1, 7):
+    total += pips                 # 1 + 2 + 3 + 4 + 5 + 6 --> 21
+print('There are ' + str(total) + ' pips on a six-sided die')
+
+-continue keyword
+for num in range(20):
+    if num % 3 == 1:
+        continue
+    print(num)
+
 
 5: Strings
 ===========
@@ -148,7 +210,7 @@ for line in data:
 
 --Is there a way to look at a specific pattern in text files without reading in the remainder? (i.e 2011-08-09 in a year worth of data)
 
-7
+7: Lists
 ===========
 --Why does the second for loop work, what is the syntax behind 'index,weapon'?
 weapons = ['sword', 'axe', 'bow', 'dagger']
@@ -166,7 +228,70 @@ items = items.sort()
 >> items = items
 
 
-
 --The difference between list.append()  and list.extend(), append adds a single element.
+
+blah = ['a', 'b', 'c']
+print(blah[0])
+>>> a
+
+---Can load nested lists (listception)
+microbe = [['bacteria', 'archaea', 'fungi', 'protists'], 
+           ['single-celled', 'multicellular'],
+           ['0.3 μm', '0.6 μm', '1.5 μm', '4 μm', '60 μm', '500 μm']]
+microbe[1][1]
+>> multicellular
+
+--Slices (elements of list up to a certain index)
+blah[0:2]
+>> ['a', 'b']
+
+overwrite an element in a list
+blah[1] = 'a'
+>> ['a', 'a']
+
+--List manipulation
+-concatenating lists
+[1, 2, 3] + ['x', 'y', 'z']
+
+for number in [10, 20, 30, 40]:
+    print(number)
+>> 10 \n 20 \n 30 \n 40
+
+--list methods
+.append(), .clear(), .copy(), .extend(), .index(), .insert(), .pop(), .remove(), .reverse(), .sort()
+
+--Sorting key (changes sorting order)
+junk = ['a', 'b', 'C', 'd', 'E']
+junk.sort()
+print(junk)
+>> ['C', 'E', 'a', 'b', 'd']
+
+junk = ['Z', 'b', 'C', 'd', 'E']
+junk.sort(key=str.lower)
+print(junk)
+>> ['b', 'C', 'd', 'E', 'Z']
+
+--Lists from delimited strings
+del_string = 'bruce,selina,kara,clark,diana'
+heroes = del_string.split(',')
+print(heroes)
+>> ['bruce', 'selina', 'kara', 'clark', 'diana']
+
+
+aliases = 'batman superman aquaman robin catwoman'
+my_heroes = aliases.split(' ')
+print(my_heroes)
+>> ['batman', 'superman', 'aquaman', 'robin', 'catwoman']
+
+aliases2 = 'catwoman\nrobin     aquaman\tsuperman batman'
+my_heroes = aliases2.split()      # Default is to split on whitespace
+                                  # \n
+                                  # \t
+                                  # <space> or <spaces>
+print(my_heroes)
+>> ['catwoman', 'robin', 'aquaman', 'superman', 'batman']
+
+
+
 
 
