@@ -16,10 +16,12 @@ The script currently reads in GOES-15 proton flux (.csv), GOES-15 Xray flux (.cs
 
 Sample displayed data of pandas data frame of xray flux:
 
+'''
                     xrdate     xrflux1     xrflux2
 0  2012-03-06 00:04:57.250  2.0555E-07  2.4972E-06
+'''
 
-![alt text](/proton.png "small image")
+![alt text](.../proton.png "small image")
 
 
 Data
