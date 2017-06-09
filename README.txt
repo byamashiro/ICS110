@@ -212,6 +212,88 @@ for line in data:
 
 --Is there a way to look at a specific pattern in text files without reading in the remainder? (i.e 2011-08-09 in a year worth of data)
 
+--Reading csv/tsv files
+-csv example
+import csv                          # The csv module provides more flexibility and tools than 
+                                    # opening the file with straight Python
+file = open('folder/stocks.csv')
+file.readline()    
+csv_stocks = csv.reader(file)       # produces a reader object that parses rows
+                                    # the way you expect, out of the box
+                                    #     defaults to comma separator
+                                    #     understands quoted fields
+open_prices = list()
+for line in csv_stocks:
+    symbol = line[0]
+    name = line[1]
+    high = line[3]
+    
+    open_prices.append(high)
+    print(symbol, name, high)
+print('\nMax:', max(open_prices))   # NOTICE the '\n' character
+file.close()
+
+
+
+-tsv example
+import csv                          # The csv module provides more flexibility and tools than 
+                                    # opening the file with straight Python
+file = open('folder/stocks.tsv')
+file.readline()                     # "Stock Symbol","Stock Name",Open,High,Low,Close,Volume,Adj Close
+tsv_stocks = csv.reader(file, delimiter='\t', quotechar="'",escapechar="\\")                        
+                                    # csv.reader takes several arguments here
+                                    #     the filehandle
+                                    #     a delimiter character 
+                                    #     a quote character to encapsulate any 
+                                    #     delimiters
+                                    #     an escape character
+open_prices = list()
+for line in tsv_stocks:
+    print(line)
+    symbol, name, _open, high, low, close, volume, adjclose = line
+    open_prices.append(high)
+    print(symbol, name, high)
+print('\nMax:', max(open_prices))
+file.close()
+
+
+--Dialect saving to save parameters (i.e What was defined as a delimiter)
+# If you're going to read a bunch of CSVs with the same style of formatting then you can
+# make a "dialect" which saves some of your arguments
+
+file = open('folder/stocks.tsv')
+csv.register_dialect('tsvDialect', delimiter='\t', quotechar="'", escapechar="\\")
+
+tsvinput = csv.reader(file, 'tsvDialect')
+
+for line in tsvinput:
+    print(line)
+
+
+--Use of functions and an if statement of an empty variable
+import csv
+
+def dayFromDate(date):
+    return date.split('/')[1]
+    
+with open("folder/yahoo_prices_short.csv") as fin:
+    fin.readline()                              # read in header
+    logs = csv.reader(fin)
+    
+    highest_vol = 0
+    
+    for line in logs:
+        date, _open, high, low, close, volume, adj_close = line # unpack full columns
+        volume = int(volume)
+        if volume > highest_vol:                # If the line has a higher volume, print the day of that line
+            highest_vol = volume                # Replace the volume as highest if it is greater
+            day = dayFromDate(date)
+        
+    print(day, highest_vol)
+
+
+
+
 7: Lists
 ===========
 --Why does the second for loop work, what is the syntax behind 'index,weapon'?
@@ -295,5 +377,93 @@ print(my_heroes)
 
 --Use the wildcard when unpacking 'king arthur' *stuff, can you average all of *stuff?
 
+--PPrint
+import pprint
+pprint.pprint(object) #list (i.e Data)
+
+mString = pprint.pformat(object)
+
+7: Dictionaries
+====================
+--Initializing a dictionary, str/float/int/list all work within the dictionary
+contact = {'name': 'Arthur', 'number': '867-5309', 'email': 'genericEmail@gmail.com'}
 
 
+
+--Adding an element to the dictionary
+contact['address'] = ['42-503 Lorelana Dr.', 'Honolulu HI', '95746']
+
+
+
+--keys()-header, values()-values, items()-both header and values
+contact.keys()
+contact.values()
+contact.items()
+
+-able to iterate over a loop to see contents
+for key in contact.keys(): #same with values()
+    print(key)
+>> name
+   number
+   email
+   address
+   account_status
+
+-iterate to see both keys and values using 'items()'
+for k, v in contact.items():
+    print(k + ":\t", v)
+>> name:    Arthur
+   number:  867-5309
+   email:   genericemail42@gmail.com
+   address:         ['42-503 Lorelana Dr.', 'Honolulu HI', '95746']
+
+
+
+--Alterting and checking if elements exist within a dictionary
+-.get()
+contact.get('account_status', 'No account recorded')
+>> No account recorded
+-WARNING: .get() does NOT alter OR update the dictionary.
+
+-.setdefault(), Actually sets an object within the dictionary and alters current dictionary
+contact.setdefault('account_status', 'No account')
+-If the value already exists, it will read the current occupier, does not overwrite
+
+
+--Use dictionaries to count
+METHOD 1
+
+mList = list('this is going to be a list for us to count which letter occurs most often')
+
+count = {} # We create our counting dict
+
+for item in mList:
+    if item in count.keys():   # We check to see if we've already made a key for this item
+        count[item] += 1       # Then we add one to the tally
+    else:                      # If it hasn't shown up then we create a key for that item and set its value to 1
+        count[item] = 1
+
+count
+
+
+METHOD 2
+
+mList = list('this is going to be a list for us to count which letter occurs most often')
+count = {}
+
+for item in mList:
+    count[item] = count.get(item, 0) + 1    # Using the get method we don't need to have a value there
+                                            # already because if it isn't there it evaluates to 0
+                                            # by default
+count
+
+-Why does 'count.setdefault(item,0)' work in this case?
+
+--Pretty printing module
+import pprint
+pprint.pprint(contact)
+
+-save as a variable
+import pprint
+text = pprint.pformat(contact)
+print(text)
