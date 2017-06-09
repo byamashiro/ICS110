@@ -12,7 +12,7 @@ Evaluate and/or Investigate your Data
 =========================
 The python script is 'read_data.py'
 
-The script currently reads in GOES-15 proton flux (.csv), GOES-15 Xray flux (.csv), and Neutron monitor data (.txt).
+The script currently reads in GOES-15 proton flux (.csv), GOES-15 Xray flux (.csv), and Neutron monitor (NM) data (.txt).
 
 Sample displayed data of pandas data frame of xray flux:
 
@@ -22,10 +22,13 @@ Sample displayed data of pandas data frame of xray flux:
 ```
 
 
-<img src="proton.png" width="500">
-<img src="xray.png" width="500">
-<img src="neutronmonitor.png" width="500">
+<img src="proton.png" width="500"><img src="xray.png" width="500"><img src="neutronmonitor.png" width="500">
 
+Data Set | Normalized (Y/N) | Bad Data Specifiers
+------------ | ------------- | -------------
+Proton Flux | N | -99999.0, 0.0
+Xray Flux | N | -99999.0, 0.0
+NM Scale | N | n/a 
 
 
 
