@@ -1,6 +1,6 @@
 # ICS110 Individual Project
 
-Analytical Question
+Analytical Questions
 =========================
 -Is the maximum proton flux at Earth correlated to the intensity of solar flares on the Sun?
 
@@ -10,7 +10,7 @@ Analytical Question
 
 Evaluate and/or Investigate your Data
 =========================
-The python script is 'read_data.py'
+The python [script](https://github.com/byamashiro09/ICS110/blob/master/Final_Project/read_data.py) is 'read_data.py'
 
 The script currently reads in GOES-15 proton flux (.csv), GOES-15 Xray flux (.csv), and Neutron monitor (NM) data (.txt).
 
