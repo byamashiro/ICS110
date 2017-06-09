@@ -23,8 +23,8 @@ Sample displayed data of pandas data frame of xray flux:
 
 
 <img src="proton.png" width="500">
-<img src="xray.png" width="700">
-<img src="neutron.png" width="900">
+<img src="xray.png" width="500">
+<img src="neutronmonitor.png" width="500">
 
 
 
