@@ -383,7 +383,7 @@ pprint.pprint(object) #list (i.e Data)
 
 mString = pprint.pformat(object)
 
-7: Dictionaries
+8: Dictionaries
 ====================
 --Initializing a dictionary, str/float/int/list all work within the dictionary
 contact = {'name': 'Arthur', 'number': '867-5309', 'email': 'genericEmail@gmail.com'}
