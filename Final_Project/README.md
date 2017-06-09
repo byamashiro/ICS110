@@ -22,6 +22,8 @@ Sample displayed data of pandas data frame of xray flux:
 
 
 ![alt text](proton.png)
+<img src="proton.png" alt="proton" style="width: 200px;"/>
+
 
 
 Data
