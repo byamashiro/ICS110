@@ -62,7 +62,7 @@ for x_lines in data_xray:
 
 xray_data = {'xrdate': xray_date, 'xrflux1': xray_1, 'xrflux2': xray_2}
 df_xray = pd.DataFrame(xray_data, columns = ['xrdate', 'xrflux1', 'xrflux2'])
-df_xray.replace('-99999.0', np.nan, inplace=True)
+df_xray.replace('-99999.0', np.nan, inplace=True) #replaces bad data with np.nan
 df_xray.replace('0.0', np.nan, inplace=True)
 
 xray_time = pd.to_datetime(df_xray['xrdate'])
