@@ -21,7 +21,7 @@ Sample displayed data of pandas data frame of xray flux:
 0  2012-03-06 00:04:57.250  2.0555E-07  2.4972E-06
 '''
 
-![alt text](proton.png "small image" width="20")
+![alt text](proton.png =100x20 "small image" )
 
 
 Data
