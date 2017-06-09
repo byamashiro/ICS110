@@ -12,7 +12,7 @@ Evaluate and/or Investigate your Data
 =========================
 The python [script](https://github.com/byamashiro09/ICS110/blob/master/Final_Project/read_data.py) is 'read_data.py'
 
-The script currently reads in GOES-15 proton flux (.csv), GOES-15 Xray flux (.csv), and Neutron monitor (NM) data (.txt).
+The script currently reads in [GOES-15 proton flux](https://github.com/byamashiro09/ICS110/tree/master/Final_Project/Data/GOES_proton_flux) (.csv), [GOES-15 Xray flux](https://github.com/byamashiro09/ICS110/tree/master/Final_Project/Data/GOES_xray_flux) (.csv), and [Neutron monitor (NM) data](https://github.com/byamashiro09/ICS110/blob/master/Final_Project/Data/NMDB_OULU_data.txt) (.txt).
 
 Sample displayed data of pandas data frame of xray flux:
 
