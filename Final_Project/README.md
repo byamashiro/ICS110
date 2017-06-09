@@ -21,7 +21,7 @@ Sample displayed data of pandas data frame of xray flux:
 0  2012-03-06 00:04:57.250  2.0555E-07  2.4972E-06
 
 
-#![alt text](proton.png)
+
 <img src="proton.png" alt="proton" style="width: 50px;"/>
 
 
@@ -39,3 +39,6 @@ ACE Magnetic Field Components
 ACE Solar Wind Parameters
 
 OULU Neutron Monitor Data
+
+
+#![alt text](proton.png)
