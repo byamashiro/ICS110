@@ -1,4 +1,4 @@
-# ICS110
+# ICS110 Individual Project
 
 Analytical Question
 =========================
@@ -7,6 +7,20 @@ Analytical Question
 -Are properties of interplanetary space, such as solar wind speed or temperature, indicators of maximum proton flux at Earth?
 
 -What are the statistical deviations from the background during intense solar events?
+
+Evaluate and/or Investigate your Data
+=========================
+The python script is 'read_data.py'
+
+The script currently reads in GOES-15 proton flux (.csv), GOES-15 Xray flux (.csv), and Neutron monitor data (.txt).
+
+Sample displayed data of pandas data frame of xray flux:
+
+                    xrdate     xrflux1     xrflux2
+0  2012-03-06 00:04:57.250  2.0555E-07  2.4972E-06
+
+![alt text](/proton.png "small image")
+
 
 Data
 =========================
