@@ -1,11 +1,11 @@
 # ICS110 Individual Project
 
 # Analytical Questions
-[]-Is the maximum proton flux at Earth correlated to the intensity of solar flares on the Sun?
+- [ ] Is the maximum proton flux at Earth correlated to the intensity of solar flares on the Sun?
 
-[]-Are properties of interplanetary space, such as solar wind speed or temperature, indicators of maximum proton flux at Earth?
+- [ ] Are properties of interplanetary space, such as solar wind speed or temperature, indicators of maximum proton flux at Earth?
 
-[]-What are the statistical deviations from the background during intense solar events?
+- [ ] What are the statistical deviations from the background during intense solar events?
 
 # Evaluate and/or Investigate your Data
 The python [script](https://github.com/byamashiro09/ICS110/blob/master/Final_Project/read_data.py) is 'read_data.py'
