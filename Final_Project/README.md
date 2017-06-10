@@ -26,6 +26,7 @@ Sample displayed data of pandas data frame of xray flux:
 6  2012-03-06 00:05:09.540  2.1001E-07  2.5208E-06
 7  2012-03-06 00:05:11.587  2.1446E-07  2.5260E-06
 8  2012-03-06 00:05:13.637  2.1112E-07  2.5391E-06
+...
 ```
 ## Neutron Monitor Data
 ```
@@ -39,6 +40,7 @@ Sample displayed data of pandas data frame of xray flux:
 6  2012-03-01 00:06:00  102.670
 7  2012-03-01 00:07:00   99.894
 8  2012-03-01 00:08:00  103.253
+...
 ```
 
 ## Proton Flux Data
@@ -53,6 +55,7 @@ Sample displayed data of pandas data frame of xray flux:
 6  2012-03-06 00:03:55.810  2.8143E-01  1.9712E-02  5.9009E-03  3.3875E-03
 7  2012-03-06 00:04:28.580  1.8762E-01  3.9424E-02  1.3769E-02  5.4200E-03
 8  2012-03-06 00:05:01.347  3.7524E-01  4.5994E-02  1.1802E-02  4.4038E-03
+...
 ```
 
 
@@ -66,7 +69,7 @@ NM Scale | N | n/a
 
 
 
-#Data
+# Data
 The data consists of mainly flux data from instruments on the ground, Earth orbit, and at the L1 Lagrange point. The data includes a sample from (2012 March), not normalized, and complete in intervals of about 30 seconds to a minute. Data values that were not accepted are denoted at extreme negative values around -9999. The specifics of each data set is commented in each header.
 
 GOES-13 Proton Flux
