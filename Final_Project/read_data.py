@@ -69,8 +69,9 @@ xray_time = pd.to_datetime(df_xray['xrdate'])
 
 print('\nSample Xray Flux Data')
 print('='* 70)
-print(df_xray[:1])
-
+for i in range(10):
+	sample_data = df_xray[:i]
+print(sample_data)
 
 
 #=======Neutron monitor Data
@@ -92,6 +93,12 @@ flux = [y[1] for y in data]
 full_data = {'date': date_time, 'value': flux}
 df = pd.DataFrame(full_data, columns = ['date', 'value'])
 converted_time = pd.to_datetime(df['date'])
+
+print('\nNeutron Monitor Data')
+print('='* 70)
+for i in range(10):
+	sample_nm_data = df[:i]
+print(sample_nm_data)
 
 #=======Particle Flux
 fin0 = open('Data/GOES_proton_flux/g15_epead_p27w_32s_20120306_20120306.csv')
@@ -161,6 +168,12 @@ df_proton.replace('0.0', np.nan, inplace=True)
 
 proton_time = pd.to_datetime(df_proton['date'])
 
+print('\nProton Flux Data')
+print('='* 70)
+for i in range(10):
+	sample_proton_data = df_proton[:i]
+print(sample_proton_data)
+sys.exit()
 
 #==============Plotting data
 #time_format = '%d-%m-%Y %H:%M:%S'
