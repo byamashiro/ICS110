@@ -173,7 +173,7 @@ print('='* 70)
 for i in range(10):
 	sample_proton_data = df_proton[:i]
 print(sample_proton_data)
-sys.exit()
+#sys.exit()
 
 #==============Plotting data
 #time_format = '%d-%m-%Y %H:%M:%S'

@@ -1,20 +1,22 @@
 # ICS110 Individual Project
 
 # Analytical Questions
--Is the maximum proton flux at Earth correlated to the intensity of solar flares on the Sun?
+[]-Is the maximum proton flux at Earth correlated to the intensity of solar flares on the Sun?
 
--Are properties of interplanetary space, such as solar wind speed or temperature, indicators of maximum proton flux at Earth?
+[]-Are properties of interplanetary space, such as solar wind speed or temperature, indicators of maximum proton flux at Earth?
 
--What are the statistical deviations from the background during intense solar events?
+[]-What are the statistical deviations from the background during intense solar events?
 
 # Evaluate and/or Investigate your Data
 The python [script](https://github.com/byamashiro09/ICS110/blob/master/Final_Project/read_data.py) is 'read_data.py'
 
 The script currently reads in [GOES-15 proton flux](https://github.com/byamashiro09/ICS110/tree/master/Final_Project/Data/GOES_proton_flux) (.csv), [GOES-15 Xray flux](https://github.com/byamashiro09/ICS110/tree/master/Final_Project/Data/GOES_xray_flux) (.csv), and [Neutron monitor (NM) data](https://github.com/byamashiro09/ICS110/blob/master/Final_Project/Data/NMDB_OULU_data.txt) (.txt).
 
-Sample displayed data of pandas data frame of xray flux:
+Corrupted data is labeled as -99999.0, and 0.0 flux is most probable to be corrupted as well. Corrupted data is changed using the pandas replace function to np.nan.
 
-## Sample Xray Flux Data
+###### Sample displayed data of pandas data:
+
+### Sample Xray Flux Data
 ```
                     xrdate     xrflux1     xrflux2
 0  2012-03-06 00:04:57.250  2.0555E-07  2.4972E-06
@@ -28,7 +30,7 @@ Sample displayed data of pandas data frame of xray flux:
 8  2012-03-06 00:05:13.637  2.1112E-07  2.5391E-06
 ...
 ```
-## Neutron Monitor Data
+### Neutron Monitor Data
 ```
                   date    value
 0  2012-03-01 00:00:00  101.902
@@ -43,7 +45,7 @@ Sample displayed data of pandas data frame of xray flux:
 ...
 ```
 
-## Proton Flux Data
+### Proton Flux Data
 ```
                       date      pflux1      pflux2      pflux3      pflux4
 0  2012-03-06 00:00:39.207  2.8143E-01  6.5707E-02  1.7703E-02  3.0488E-03

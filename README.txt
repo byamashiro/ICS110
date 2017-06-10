@@ -467,3 +467,58 @@ pprint.pprint(contact)
 import pprint
 text = pprint.pformat(contact)
 print(text)
+
+
+9: Tuples
+=====================================
+Tuples are very similar to lists however they're a lot simpler.
+There is a reason for this... tuples are intended to be immutable
+
+--Sample tuples
+superhero = tuple(['bruce wayne', 'gotham', 'batman']) = ('bruce wayne', 'gotham', 'batman')
+sample_tuple = ('diana', )
+superhero[1]
+>> gotham
+
+--tuples vs. lists
+name_d = ['bruce', 'wayne']
+name_t = ('selina', 'kyle')
+characters = {name_d: 'batman'}
+>> TypeError: unhashable type: 'list'
+characters = {name_t: 'catwoman'}
+>> {('selina', 'kyle'): 'catwoman'}
+
+--sorted() function
+-what can be sorted by the sorted() function?
+~Iterable-sequence (string, tuble, list) or collection (set, dictionary, frozen set) or any iterator
+
+-what does the sorted() function return?
+~a sorted list from the given iterable
+
+-what does key allow you to do?
+~function that serves as a key for the sort comparison
+
+-what is the default setting for reverse?
+~if True, the sorted list is reversed (default = False)
+
+-what type of function is sorted()?
+~a method that sorts the elements of a given list
+
+
+--named tuples
+Named tuples are a mechanism for creating tuples with: names,named attributes
+
+from collections import namedtuple
+Heroine = namedtuple('Heroine', ['fname', 'lname'])
+heroine = Heroine('diana', 'prince')
+type(heroine)
+>> __main__.Heroine
+heroine.lname
+>> 'prince'
+heroine.fname
+>> 'diana'
+
+
+
+
+
