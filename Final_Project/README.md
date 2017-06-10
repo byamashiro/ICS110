@@ -83,6 +83,3 @@ ACE Magnetic Field Components
 ACE Solar Wind Parameters
 
 OULU Neutron Monitor Data
-
-
-#![alt text](proton.png)
