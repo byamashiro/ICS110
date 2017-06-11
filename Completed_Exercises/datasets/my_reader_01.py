@@ -53,7 +53,7 @@ for line in counter.keys():
 		continue
 
 
-print(non_chars)
+print('The different characters: ',non_chars)
 
 print('='*70)
 count_x = 0
