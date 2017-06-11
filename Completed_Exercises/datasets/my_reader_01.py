@@ -61,7 +61,7 @@ for line in data_r2:
 	if line.startswith('x'):
 		count_x += 1
 
-print('Words starting with x: ', count_x)
+print('Words starting with "x": ', count_x)
 
 def vowels(word):
 	count_v = 0
@@ -104,7 +104,7 @@ for line in data_r2:
 
 for line in data_r2:
 	boolean, v_no = vowels(line)
-	if v_no == 10:
+	if v_no == vowel_max:
 		vowel_max_counter += 1
 
 
@@ -113,7 +113,7 @@ print(
 '3 or more vowels: ', vowel_counter_3, '\n',
 '4 or more vowels: ', vowel_counter_4, '\n',
 '5 or more vowels: ', vowel_counter_5, '\n',
-'Maximum Vowels: ', vowel_max_counter, '\n',
+f'Maximum Vowels with {vowel_max} characters: ', vowel_max_counter, '\n',
 'No Vowels: ',no_vowel
 )
 print('=' * 70)
