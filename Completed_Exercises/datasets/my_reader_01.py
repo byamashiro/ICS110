@@ -1,5 +1,6 @@
 import pprint
 import sys
+from operator import itemgetter, attrgetter
 
 fin = open('113809of.fic')
 
@@ -125,16 +126,174 @@ def cvcheck(cv_word):
 		return False
 '''
 
-print(vowels('bbbbb'))
+#print(vowels('bbbbb'))
+data_r2_test = ['cacacaca', 'acacaca', 'caciceckcl']
 
-cv_counter = 0
+#cv_dict = {}
+counter_cv = {}
+
 for line in data_r2:
+	bool_con = 0
+	bool_vow = 0
+
 	cv_pattern = list(line)
+	#print(line)
+	con_counter = 0
+	vow_counter = 0
+
+
+#########consonants
 	for i in cv_pattern[::2]:
 		bool_c, count_c = vowels(i)
-		count_c += count_c
-		if count_c == len(cv_pattern):
-			
+		con_counter += count_c
+	if con_counter == 0:
+		bool_con = 1
+	else:
+		bool_con = 0
+
+#########vowels
+	for j in cv_pattern[1::2]:
+		bool_v, count_v = vowels(j)
+		vow_counter += count_v
+	if vow_counter == len(cv_pattern[1::2]):
+		bool_vow = 1
+	else:
+		bool_vow = 0
+
+	if line in counter_cv.keys():
+		counter_cv[line] += 0
+	else:
+		counter_cv[line] = (bool_con + bool_vow)
+		
+	#print(bool_con + bool_vow)
+
+##########Read into a dictionary
+'''
+for line in data:
+	if line in counter_cv.keys():
+		counter_cv[line] +=1
+	else:
+		counter_cv[line] = 1
+'''
+#print(counter_cv)
+#sys.exit()
+cv_chars = []
+
+for line in counter_cv.keys():
+	if counter_cv[line] == 2:
+		cv_lines = line
+		cv_chars.append(cv_lines)
+		#print('working...')
+	else:
+		continue
+
+
+print('Total amount of C-V words: ', len(cv_chars))
+#print(cv_chars)
+
+
+cv_max = 0
+cv_max_counter = 0
+for line in cv_chars:
+	#boolean, v_no = vowels(line)
+	if (len(line)) > cv_max:
+		cv_max = (len(line))
+
+for line in data_r2:
+	if len(line) == cv_max:
+		cv_max_counter += 1
+
+print(f'Total number of {cv_max} character C-V words is: ', cv_max_counter)
+
+print('=' * 70)
+
+
+alpha_dict = {}
+for item in data_r2:
+	alpha_list = list(item)
+	for i in alpha_list:
+		alpha_dict[i] = alpha_dict.setdefault(i, 0) + 1
+
+alpha_low = list(sorted(alpha_dict.items(), key=itemgetter(1)))
+alpha_high = list(sorted(alpha_dict.items(), key=itemgetter(1), reverse=True))
+
+print('The three letters that appear least frequently: ',alpha_low[:3])
+print('The three letters that appear most frequently: ',alpha_high[:3])
+
+
+data_r2_double = ['abaabess', 'abelsess', 'ssaesdffssfweffdsaa', 'sdfsdfa']
+true_counter = 0
+iterable = 0
+double_dict = {}
+for item in data_r2:
+	double_list = list(item)
+	iterable = 0
+	true_counter = 0
+	for i in double_list:
+		iterable +=1
+		#print(iterable)
+		#print(i, ' ', double_list[iterable])
+		try:
+			if i == double_list[iterable]:
+				letter1 = i
+				letter2 = double_list[iterable]
+				sequence_letter = letter1+letter2
+				if sequence_letter in double_dict.keys():
+					double_dict[sequence_letter] += 1
+				else:
+					double_dict[sequence_letter] = 1
+
+				#print(word1+word2)
+				#print(word1, ' ', word2)
+				#print(double_list[iterable::1])
+				#true_counter += 1
+				#print(i, ' ', double_list[iterable])
+				#for j in double_list:
+				#double_dict[i] = double_dict.setdefault((word1+word2)) + 1
+
+		except IndexError:
+			pass
+		#print(word1, ' ', word2)
+#for j in double_dict:
+#double_dict[j] = double_dict.setdefault((word1+word2), 0) + 1
+
+high_double = sorted(double_dict.items(), key=itemgetter(1), reverse=True)
+
+print('The letter that occurs most frequently as a double: ', high_double[:1])
+'''
+	for i in double_list:
+		first = i
+	if i == first:
+		true_counter += 1
+	#for j in double_list[1::1]:
+	#	print('next: ', j)
+	 	#if i == i[::2]:
+	 	#	true_counter += 1
+	 	#	print(i, ' ', i[::2])
+	 	#alpha_dict[i] = alpha_dict.setdefault(i, 0) + 1
+	print(true_counter)
+'''
+
+#pprint.pprint(alpha_dict)
+
+
+#print(counter_cv)
+'''
+	if con_counter == len(cv_pattern[::2]):
+		bool_con = False
+	elif con_counter != len(cv_pattern[::2]):
+	 	bool_con = False
+	 		#elif con_counter == len(cv_pattern[::2]):
+	#	bool_con = 2
+	 		#print(con_counter)
+	 	#print(cv_pattern[::2])
+	 	#print(con_counter)
+	 	#print(len(cv_pattern))
+'''
+
+
+
+
 
 
 '''
