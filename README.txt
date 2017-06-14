@@ -519,6 +519,133 @@ heroine.fname
 >> 'diana'
 
 
+h = 'baba'
+h[::2]
+>> 'bb'
+h[1::2]
+>> 'aa'
+
+
+10: Regular Expressions
+=====================================
+--re.compile(r'string')
+Sets the pattern that you want to observe
+
+--re.search('string')
+Searches for the expression defined in the compile statement - usually assign this to a label for result print
+
+import re
+phonePattern = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')
+matchObj = phonePattern.search('My number is ###-###-####')
+print('found numbers:', matchObj.group())
+
+--break up/segregate matches into submatches using nested parenthesis
+phonePattern2 = re.compile(r'(\d\d\d)-(\d\d\d-\d\d\d\d)')
+-this allows indexing for matches starting from [0]
+
+--use the .span() to find the range of slices
+matchObj.span()
+'My number is ###-###-####'
+ |    |       |          |
+ 0    5      13         24
+
+ --use the .groups() to print all subgroups
+
+ --use the (|) character for 'OR', to match multiple patterns
+ multiRegex = re.compile(r'hat|cat')
+
+--If you need to repeat a character OR string of characters OR a character class, you can tell the re module how many times to repeat using a number in {}
+haRegex = re.compile(r'(ha){3}')
+result = haRegex.search('hehahahahahehe').group()
+print(result)
+>> hahaha
+
+--If we want to find any sequence between 3 and 5 units long: we can use a range-style notation
+haRegex = re.compile(r'(ha){3,5}')
+-To alter this behavior, you can tell the regex module to be lazy, using the '?' which will default to the shortest string that matches the pattern
+
+
+--For those times when you want to find all instances of a pattern NOTE: findall returns a list NOT a matchObj
+phoneRegex = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')
+phoneRegex.findall('Home: ###-###-####, Cell: ###-###-####')
+
+
+Character class Represents
+\d  :  numeric digits 0-9
+\D  :  everything BUT digits 0-9
+\w  :  any letter, numeric or underscore character
+\W  :  everything BUT letters, numerics, or underscores
+\s  :  spaces, tabs, and newline characters
+\S  :  everything BUT spaces, tabs, and newlines
+
+
+Regex symbols      Their function
+?               :  matches zero or one (also drives lazy matching, see below
+*               :  matches zero or more
++               :  matches one or more
+{n}             :  matches exactly n
+{n,}            :  matches n or more
+{,m}            :  matches 0 to m
+{n,m}           :  matches at least n and at most m
+{n,m}?, *?, +?  :  performs a non-greedy(lazy) match
+^spam           :  the string must begin with spam
+spam$           :  the string must end with spam
+.               :  matches any character except newlines
+[abc]           :  matches any character between the brackets
+[^abc]          :  matches any character but the ones between the brackets
+
+
+mo = re.search(r'\d', 'A1B2C3')
+mo.group()
+re.findall(r'\d', 'A1B2C3')
+>>  ['1', '2', '3']
+
+--Flags
+re.IGNORECASE (or re.I), re.DOTALL, re.VERBOSE
+
+-helloRegex = re.compile(r'hello', re.IGNORECASE)
+print(helloRegex.findall('I said "HELLO!" to the man after he said hello to me'))
+>> ['HELLO', 'hello']
+
+-dotallRegex = re.compile(r'.*') - this stops at the new line dot (.) will match all characters except a newline, (*) will repeat the previous pattern multiple times
+dotallRegex = re.compile(r'.*', re.DOTALL)
+print(dotallRegex.search('Batman is love\nBatman is life').group())
+>> Batman is love (first line stops here)
+>> Batman is life
+
+-phoneRegex = re.compile(r'((\d{3}|\(\d{3}\))?(\s|-|\.)?\d{3}(\s|-|\.)\d{4}(\s*(ext|x|ext.)\s*\d{2,5})?)')
+VERSUS...
+phoneRegex = re.compile(r'''(
+                            (\d{3}|\(\d{3}\))?
+                            (\s|-|\.)?          # space OR hyphen OR literal dot (lazy)
+                            \d{3}
+                            (\s|-|\.)           # space OR hyphen OR literal dot 
+                            \d{4}
+                            (\s*(ext|x|ext.)\s*\d{2,5})?     # variations on extensions
+                            )''', re.VERBOSE)
+-allows for clean commenting 
+
+-possible to combine flags using (|)
+re.compile(r'example string', re.VERBOSE | re.IGNORECASE)
+
+
+
+--when using regex command, does it repeat at the pointer, or at next iteration?
+haRegex = re.compile(r'(ha){3}')
+-i.e if the line was 'eeeeeeeeeee', would it start at index 0->1->2 or from first 'ee' to second 'ee'?
+
+--can you create nested capture groups?
+-email = re.compile(r'(\S*)@(\D*.(\D*))')
+
+
+
+
+
+
+
+
+
+
 
 
 
