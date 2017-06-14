@@ -628,14 +628,25 @@ phoneRegex = re.compile(r'''(
 -possible to combine flags using (|)
 re.compile(r'example string', re.VERBOSE | re.IGNORECASE)
 
-
+--Customizing character class patterns
+[0-9] matches any single numeric character
+[0-9][0-9] matches any two numeric characters
+[0-9][0-9][a-z] matches any two numeric characters followed by one lowercase alpha character
+[0-9]{3} matches any three numeric character
+[0-9]{2,8} matches any two to eight numeric characters
+[a-zA-Z] matches any lowercase OR uppercase alpha character
+[a-zA-Z_.#] matches any lowercase OR uppercase alpha character OR underscore OR literal period or hashtag
+-i.e [A-Z@&*] for: contains a character class for uppercase letters AND these symbols: @, &, *
 
 --when using regex command, does it repeat at the pointer, or at next iteration?
 haRegex = re.compile(r'(ha){3}')
 -i.e if the line was 'eeeeeeeeeee', would it start at index 0->1->2 or from first 'ee' to second 'ee'?
+-regex completes things in a 'non-overlapping' style
+
 
 --can you create nested capture groups?
 -email = re.compile(r'(\S*)@(\D*.(\D*))')
+-yes, the largest group is listed first, followed by the nested lists
 
 
 

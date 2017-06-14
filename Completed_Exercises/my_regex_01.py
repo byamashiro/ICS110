@@ -11,10 +11,10 @@ list_test = [test_one, test_two, test_three, test_four, test_five]
 
 email_sav = []
 for i in list_test:
-	if '@' in i:
+	if '@' in i and '.' in i:
 		email = re.compile(r'(\S*)@(\w*).(\w*)') #need to escape dot \. "\." [.]
 		myobj = email.search(i)
-		print('email list: ', myobj.group())
+		print('email list: ', myobj.group(), '<--------This is an email address')
 		print('sep. parts: ', myobj.groups())
 		email_sav.append(myobj.group())
 	else:

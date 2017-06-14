@@ -14,6 +14,10 @@ myObj = pattern1.search('which number 23-222-3333 OR 234-33-4455 is an SSN?')
 print('result is: ', myObj.group())
 print('result is: ', myObj.group(0))
 print('result is: ', myObj.group(1))
+#print('result is: ', myObj.group(2))
+#print('result is: ', myObj.group(3))
+
+
 print('result is: ', myObj.groups())
 print('result is: ', myObj.span())
 
@@ -21,8 +25,14 @@ print('result is: ', myObj.span())
 #======part 2
 print(('=' * 30) + 'Part 2' + ('=' * 30))
 
-pattern2 = re.compile(r'(\w){3,5}')
+print('Can you find &ME* or @YOU but not )WE')
+pattern2 = re.compile(r'[A-Z@&*]{3,5}') #literal hyphen and escape character
 matchObj2 = pattern2.search('Can you find &ME* or @YOU but not )WE')
 
 matchObj3 = pattern2.findall('Can you find &ME* or @YOU but not )WE')
 print('content: ', matchObj2.group(), matchObj3)
+
+
+
+
+

@@ -57,7 +57,7 @@ print('The different characters: ',non_chars)
 
 print('='*70)
 count_x = 0
-for line in data_r2:
+for line in data:
 	if line.startswith('x'):
 		count_x += 1
 
@@ -87,7 +87,7 @@ no_vowel = 0
 vowel_max = 0
 vowel_max_counter = 0
 
-for line in data_r2:
+for line in data:
 	boolean, v_no = vowels(line)
 	if v_no >= 2:
 		vowel_counter_2 += 1
@@ -102,7 +102,7 @@ for line in data_r2:
 	if v_no > vowel_max:
 		vowel_max = v_no
 
-for line in data_r2:
+for line in data:
 	boolean, v_no = vowels(line)
 	if v_no == vowel_max:
 		vowel_max_counter += 1
@@ -117,7 +117,7 @@ f'Maximum Vowels with {vowel_max} characters: ', vowel_max_counter, '\n',
 'No Vowels: ',no_vowel
 )
 print('=' * 70)
-
+#==================================Consonants and vowel segment starts here
 '''
 def cvcheck(cv_word):
 	if cv_word != 'a' or 'e' or 'i' or 'u':
@@ -127,12 +127,12 @@ def cvcheck(cv_word):
 '''
 
 #print(vowels('bbbbb'))
-data_r2_test = ['cacacaca', 'acacaca', 'caciceckcl']
+data_test = ['cacacaca', 'acacaca', 'caciceckcl']
 
 #cv_dict = {}
 counter_cv = {}
 
-for line in data_r2:
+for line in data:
 	bool_con = 0
 	bool_vow = 0
 
@@ -199,7 +199,7 @@ for line in cv_chars:
 	if (len(line)) > cv_max:
 		cv_max = (len(line))
 
-for line in data_r2:
+for line in data:
 	if len(line) == cv_max:
 		cv_max_counter += 1
 
@@ -209,7 +209,7 @@ print('=' * 70)
 
 
 alpha_dict = {}
-for item in data_r2:
+for item in data:
 	alpha_list = list(item)
 	for i in alpha_list:
 		alpha_dict[i] = alpha_dict.setdefault(i, 0) + 1
@@ -221,11 +221,11 @@ print('The three letters that appear least frequently: ',alpha_low[:3])
 print('The three letters that appear most frequently: ',alpha_high[:3])
 
 
-data_r2_double = ['abaabess', 'abelsess', 'ssaesdffssfweffdsaa', 'sdfsdfa']
+data_double = ['abaabess', 'abelsess', 'ssaesdffssfweffdsaa', 'sdfsdfa']
 true_counter = 0
 iterable = 0
 double_dict = {}
-for item in data_r2:
+for item in data:
 	double_list = list(item)
 	iterable = 0
 	true_counter = 0
