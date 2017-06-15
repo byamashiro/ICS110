@@ -651,12 +651,72 @@ haRegex = re.compile(r'(ha){3}')
 
 
 
+11:  Internet
+================================
+--Reading in textfiles from online sources
+import urllib.request
+file = urllib.request.urlopen('http://data.pr4e.org/romeo.txt') #data is read in as bytes
+for line in file:
+    print(line.decode().strip()) # converts bytes to strings using the .decode() attribute
+>> But soft what light through yonder window breaks
+>> It is the east and Juliet is the sun
+>> Arise fair sun and kill the envious moon
+>> Who is already sick and pale with grief
 
 
+import pprint
+import urllib.request
+file = urllib.request.urlopen('http://data.pr4e.org/romeo.txt')
+count = {}
 
+for line in file:
+    words = line.decode().strip().split()
+    
+    for word in words:
+        # If a key for the word already exists .get() grabs the value otherwise it automatically returns 0
+        count[word] = count.get(word, 0) + 1
+pprint.pprint(count)
 
+--HTML text
+page = urllib.request.urlopen('http://dr-chuck.com/page1.htm')
 
+for line in page:
+    print(line.decode().strip())
 
+>> <h1>The First Page</h1>
+>> <p>
+>> If you like, you can switch to the
+>> <a href="http://www.dr-chuck.com/page2.htm">
+>> Second Page</a>.
+>> </p>
 
+--Beautiful soup (conda install beautifulsoup4) [https://www.crummy.com/software/BeautifulSoup/bs4/doc/]
+-Makes reading and parsing web pages a lot easier
+-Allows you to extract tags of only certain types
+-You can find certain tags based on their relationship in the tag heirarchy
+-Getting hyperlinks becomes a whole lot easier
 
+from bs4 import BeautifulSoup
+import urllib.request
+htmlText = urllib.request.urlopen('http://www.unicode.org/').read() #read method used in urllib...
+soup = BeautifulSoup(htmlText, 'html.parser')
+tags = soup('a')
+for tag in tags:
+    print(tag.get('href', None))
 
+--Standing up a local HTTP server
+$ cd path/to/the/lesson 11/folder/11
+$ python -m http.server 8000
+
+-able to run internet commands through localhost:8000
+import urllib.request
+
+file = urllib.request.urlopen('http://localhost:8000/annabel_lee.txt')
+for line in file:
+    print(line.decode().strip())
+
+page = urllib.request.urlopen('http://localhost:8000/jabberwocky.html')
+for line in page:
+    print(line.decode().strip())
+
+-is there a way to convert HTML to strings?

@@ -133,40 +133,41 @@ data_test = ['cacacaca', 'acacaca', 'caciceckcl']
 counter_cv = {}
 
 for line in data:
-	bool_con = 0
-	bool_vow = 0
-
-	cv_pattern = list(line)
-	#print(line)
-	con_counter = 0
-	vow_counter = 0
-
-
-#########consonants
-	for i in cv_pattern[::2]:
-		bool_c, count_c = vowels(i)
-		con_counter += count_c
-	if con_counter == 0:
-		bool_con = 1
-	else:
+	if len(line) % 2 == 0:
 		bool_con = 0
-
-#########vowels
-	for j in cv_pattern[1::2]:
-		bool_v, count_v = vowels(j)
-		vow_counter += count_v
-	if vow_counter == len(cv_pattern[1::2]):
-		bool_vow = 1
-	else:
 		bool_vow = 0
 
-	if line in counter_cv.keys():
-		counter_cv[line] += 0
-	else:
-		counter_cv[line] = (bool_con + bool_vow)
-		
-	#print(bool_con + bool_vow)
+		cv_pattern = list(line)
+		#print(line)
+		con_counter = 0
+		vow_counter = 0
 
+
+	#########consonants
+		for i in cv_pattern[::2]:
+			bool_c, count_c = vowels(i)
+			con_counter += count_c
+		if con_counter == 0:
+			bool_con = 1
+		else:
+			bool_con = 0
+	
+	#########vowels
+		for j in cv_pattern[1::2]:
+			bool_v, count_v = vowels(j)
+			vow_counter += count_v
+		if vow_counter == len(cv_pattern[1::2]):
+			bool_vow = 1
+		else:
+			bool_vow = 0
+	
+		if line in counter_cv.keys():
+			counter_cv[line] += 0
+		else:
+			counter_cv[line] = (bool_con + bool_vow)
+			
+		#print(bool_con + bool_vow)
+	
 ##########Read into a dictionary
 '''
 for line in data:
