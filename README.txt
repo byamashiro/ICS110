@@ -670,7 +670,7 @@ file = urllib.request.urlopen('http://data.pr4e.org/romeo.txt')
 count = {}
 
 for line in file:
-    words = line.decode().strip().split()
+    words = line.decode().strip().split() #converts into a string > strip whitespace chars on string > list
     
     for word in words:
         # If a key for the word already exists .get() grabs the value otherwise it automatically returns 0
@@ -720,3 +720,84 @@ for line in page:
     print(line.decode().strip())
 
 -is there a way to convert HTML to strings?
+
+
+12: JSON
+====================================
+--When executed (with eval or otherwise), this code creates and returns a JavaScript object which contains the data you serialized
+
+import json
+
+sample_zero = '''{
+        "name":"merchandise",
+        "properties":
+        {
+                "id":
+                {
+                        "type":"numeric",
+                        "description":"merchandise identifier",
+                        "required":true,
+                        "format":"nn-nnn-nnnnnn"
+                },
+        }
+}'''
+info = json.loads(sample_zero)
+print(type(info), info)
+
+info['properties']['id']['format']
+>> "nn-nnn-nnnnnn"
+
+--json objects are mainly dictionaries with keys : values
+-json objects are denoted with {}
+-json arrays are denoted with []
+
+
+--Example with .json
+{"NKO": ["13.53", "13.52", "13.55"...
+
+import json
+
+with open('data.json') as inputfile:
+    data = json.load(inputfile)
+
+if '13.37' in data['NVY']:
+    i = data['NVY'].index('13.37')
+    print(i, data['NVY'][i])
+
+
+--Example with .csv
+exchange    stock_symbol    date    stock_price_open    stock_price_high    stock_price_low stock_price_close   stock_volume    stock_price_adj_close
+AMEX    NKO 2/8/10  13.53   13.53   13.4    13.5    4500    13.5
+AMEX    NKO 2/5/10  13.52   13.52   13.45   13.45   7500    13.45
+AMEX    NKO 2/4/10  13.44   13.55   13.32   13.55   15800   13.55
+
+import csv
+import json
+
+#with open('AMEX_daily_prices_N.csv', encoding='utf-8-sig') as fin:
+with open('AMEX_daily_prices_N.csv') as fin:
+    reader = csv.reader(fin)
+
+    data = {}
+
+    header = ''
+    for line in reader:
+        if not header:
+            header = line
+            continue
+        exchange, stock_sym, date, _open, high, low, close, volume, adj = line
+        #if stock_sym in ["NGX", "NKX", "NOX", "NVX", "NXE", "NXG", "NXI", "NXJ", "NXK", "NXM", "NXZ", "NZX"]:
+        if 'X' in stock_sym:
+            data[stock_sym] = data.get(stock_sym, []) + [close]
+
+with open('x_stocks_test.json', 'w') as fout:
+    json.dump(data, fout,
+              indent=4,
+              sort_keys=True)
+
+
+
+
+
+
+
