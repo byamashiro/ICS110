@@ -5,7 +5,7 @@ import re
 fin = open('113809of.fic').readlines()
 
 # compile a pattern
-pattern = re.compile(r'^([^aeiou][aeiou])+', re.DOTALL)
+pattern = re.compile(r'^([^aeiou][aeiou])+$', re.DOTALL) #^([^aeiouyAEIOUY0-9\W]+)$|^([aeiouyAEIOUY]+)$
 counter = 0
 
 # iterate over the words
@@ -15,7 +15,10 @@ for line in fin:
 	if len(word) % 2 == 0:
 		#print(word)
 		matchobj = pattern.search(word)
-		counter += 1
+		if matchobj != None:
+			print(matchobj)
+			counter += 1
+
 print(counter)
 
 
