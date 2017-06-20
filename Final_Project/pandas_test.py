@@ -104,20 +104,22 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 
 #'11.6', '30.6', '63.1', '165'
-plt.plot(xray_time, xray_A_flux, '-', color='blue')
-plt.plot(xray_time, xray_B_flux, '-', color='red')
+plt.plot(xray_time, xray_A_flux, '-', color='blue', label= '0.05-0.4 nm')
+plt.plot(xray_time, xray_B_flux, '-', color='red', label = '0.1-0.8 nm')
 
 #plt.axvline(x=4481, ymin=0, ymax=1, hold=None, color='purple')
 #plt.xlim([tstart, tstop])
 plt.title('GOES-15 Xray Flux', fontname="Arial", fontsize = 14)
 plt.xlabel('Time', fontname="Arial", fontsize = 14)
-plt.ylabel('Flux [Wm$^2$]', fontname="Arial", fontsize = 14)
+plt.ylabel('Flux $[$W $\cdot$ m$^2$]', fontname="Arial", fontsize = 14)
 plt.minorticks_on()
 #plt.ylim([0,1])
 plt.grid(True)
 plt.yscale('log')
+plt.legend(loc='lower right')
 #plt.savefig('xray.pdf', format='pdf', dpi=900)
 plt.tight_layout()
+
 
 ax.xaxis.set_major_formatter(myFmt)
 
