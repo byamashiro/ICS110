@@ -722,7 +722,7 @@ for line in page:
 -is there a way to convert HTML to strings?
 
 
-12: JSON
+12, Part 1: JSON
 ====================================
 --When executed (with eval or otherwise), this code creates and returns a JavaScript object which contains the data you serialized
 
@@ -797,7 +797,44 @@ with open('x_stocks_test.json', 'w') as fout:
 
 
 
+12, Part 2: XML
+==============================
+--XML is a markup language similar to HTML in format but used to create fully customized markups. You can create elements using tags.
+
+--set() vs. list vs. tuple
+
+import xml.etree.ElementTree as ET
+
+with open('catalog.xml', 'rb') as data:
+    xmlParsed = ET.parse(data)
+
+--Unique list of tags
+elemList = set()
+for elem in xmlParsed.iter():   # The iter() function can iterate over all the tags...
+    elemList.add(elem.tag)      # sets automatically dedupe
+print(elemList)
 
 
+--Iterating over tags
+for title in titles:
+    print(title.get('id'))
+titles = xmlParsed.iterfind('book/title')
+for title in titles:
+    print(title.text)
+
+authors = xmlParsed.findall('book/author')
+for name in authors:
+    name = name.text
+    fname, lname = name.split(', ')
+    if len(lname) == 3:
+        print(name)
+
+--Writing to files
+for elem in xmlParsed.iter('price'):
+    price = float(elem.text)
+    new_price = price + 100.0
+    elem.text = str(new_price)
+    
+xmlParsed.write('output.xml')
 
 
