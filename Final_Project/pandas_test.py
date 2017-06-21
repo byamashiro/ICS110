@@ -40,10 +40,15 @@ end = datetime.date( year = int(f'{end_date[0:4]}'), month = int(f'{end_date[4:6
 xray_df = pd.DataFrame([])
 
 for date in daterange( start, end ):
-	event_date = str(date).replace('-','')
-	print(event_date)
-	xray_df_ind = pd.read_csv(f'Data/GOES_xray_flux/g15_xrs_2s_{event_date}_{event_date}.csv', skiprows=138, header=0)
-	xray_df = xray_df.append(xray_df_ind)
+	try:
+		event_date = str(date).replace('-','')
+		print(event_date)
+		xray_df_ind = pd.read_csv(f'Data/GOES_xray_flux/g15_xrs_2s_{event_date}_{event_date}.csv', skiprows=138, header=0)
+		xray_df = xray_df.append(xray_df_ind)
+	except:
+		print(f'Missing data for {date}')
+		continue
+
 
 xray_df.loc[xray_df['A_FLUX'] <= 0.0] = np.nan
 xray_df.loc[xray_df['B_FLUX'] <= 0.0] = np.nan
@@ -111,7 +116,7 @@ plt.plot(xray_time, xray_B_flux, '-', color='red', label = '0.1-0.8 nm')
 #plt.xlim([tstart, tstop])
 plt.title('GOES-15 Xray Flux', fontname="Arial", fontsize = 14)
 plt.xlabel('Time', fontname="Arial", fontsize = 14)
-plt.ylabel('Flux $[$W $\cdot$ m$^2$]', fontname="Arial", fontsize = 14)
+plt.ylabel('Flux $[$ W $\cdot$ m$^2$]', fontname="Arial", fontsize = 14)
 plt.minorticks_on()
 #plt.ylim([0,1])
 plt.grid(True)

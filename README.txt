@@ -801,6 +801,27 @@ with open('x_stocks_test.json', 'w') as fout:
 ==============================
 --XML is a markup language similar to HTML in format but used to create fully customized markups. You can create elements using tags.
 
+--sets - non-overlapping
+s = set()
+t = set([3, 4, 5, 6, 7, 8, 9])
+
+s.update([1, 2, 3, 4, 5, 4, 4, 4, 4, 4]) # extra 4's will be neglected
+print(s)
+>> {1, 2, 3, 4, 5}
+
+s.intersection(t) # values shared by s and t
+>> {3, 4, 5}
+
+s.difference(t) # values of t not in s
+>> {1, 2}
+t.difference(s)
+>> {6, 7, 8, 9}
+
+s.union(t) #shows full values of both
+>> {1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+
+
 --set() vs. list vs. tuple
 
 import xml.etree.ElementTree as ET

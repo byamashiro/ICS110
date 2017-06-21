@@ -24,8 +24,6 @@ def vowels(word):
 # open and read the file
 fin = open('113809of.fic').readlines()
 
-
-
 # compile a pattern
 pattern = re.compile(r'([a]*[a])+$', re.DOTALL) #^([^aeiouyAEIOUY0-9\W]+)$|^([aeiouyAEIOUY]+)$
 counter = 0
