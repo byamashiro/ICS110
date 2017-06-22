@@ -859,3 +859,121 @@ for elem in xmlParsed.iter('price'):
 xmlParsed.write('output.xml')
 
 
+
+
+14: SQL
+============================
+--imports and connection
+import sqlite3
+conn = sqlite3.connect('data.db') # must always close connection after completion (i.e conn.close())
+
+
+--creation of a table
+sql = '''CREATE TABLE customers (first name text,
+                                 last name text,
+                                 email text,
+                                 age integer)'''
+
+--run SQL code
+conn.execute(sql) # will break if the table already exists
+
+
+--inserting values
+con.execute(INSERT INTO table_name VALUES (?,?,?,...),
+            (cust_id, fname, lname,))
+
+
+--cursor method (.cursor()) is associated with the connection (i.e 'conn')
+cur = conn.cursor()   # Create the cursor
+
+
+--obtain data from SQL
+for row in cur.execute('SELECT * FROM customers'):  # '*' is the wildcard, multiple variables can be called (i.e email, age,...)    
+    print(row) # print(cur.fetchall()) will return a Python list of matching items, stored as tuples
+
+
+--Adding more data in table and updating
+ins3 = 'INSERT INTO customers VALUES (?, ?, ?, ?, ?)'
+cur.execute(ins3, (5, 'Kara', 'Zor-el', 'kzorel@krypton.org', 33))
+
+--or--
+
+cur.execute("""UPDATE customers 
+               SET email='bgordon@gotham.com' 
+               WHERE email LIKE 'bgordon%'
+               """)
+
+print(cur.execute('SELECT * FROM customers WHERE age = 33').fetchall()) 
+
+
+
+--More SQL syntax
+-WHERE
+for row in cur.execute('SELECT email, age FROM customers WHERE age > 34'): # can use others <,>,=,...
+
+-ORDER BY (can also use descending using DESC)
+for a, e in cur.execute('''SELECT age, email 
+                           FROM customers 
+                           WHERE age > 34 
+                           ORDER BY age DESC'''):
+
+
+-DISTINCT
+for row in cur.execute('SELECT DISTINCT age FROM customers'):
+
+
+-COUNT
+for row in cur.execute('''SELECT email, COUNT(age) AS count
+                          FROM customers
+                          GROUP BY age
+                          HAVING age > 34'''):
+
+
+-GROUP BY -> HAVING/LIMIT (the second two methods require and depend on the 'GROUP BY' method)
+for row in cur.execute('''SELECT age, COUNT(age) AS count
+                          FROM customers
+                          GROUP BY age
+                          LIMIT 2'''): or HAVING age > 34'''):
+
+-DELETE FROM
+cur.execute("DELETE FROM customers WHERE first_name='Hal'")
+
+for row in cur.execute('SELECT * FROM customers'):
+    print(row)
+
+
+--SQL example using .csv file
+import sqlite3
+
+conn = sqlite3.connect('my_second_sql.db')
+
+sql = '''CREATE TABLE stocks (symbol text, # creating the table
+                                date date,
+                                open_price float,
+                                close float,
+                                volume integer)'''
+
+try:
+    conn.execute(sql)
+except:
+    pass
+
+fin = open('AMEX_daily_prices_N.csv')
+header = fin.readline()
+
+for line in fin:
+    exchange, stock_symbol, date, stock_price_open, stock_price_high, stock_price_low, stock_price_close, stock_volume, stock_price_adj_close = line.strip().split(',')
+    conn.execute('INSERT INTO stocks VALUES (?,?,?,?,?)',
+                    (stock_symbol, date, stock_price_open, stock_price_close, stock_volume))
+    
+cur = conn.cursor()
+
+for row in cur.execute('''SELECT symbol, open_price, close
+                        FROM stocks
+                        WHERE close > 925'''):
+    print(row)
+
+conn.close() # remember to close out or database will be locked on following run
+
+
+
