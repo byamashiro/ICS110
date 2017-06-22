@@ -860,6 +860,84 @@ xmlParsed.write('output.xml')
 
 
 
+13: Object Oriented Programming
+========================================
+--Class
+A class is a type of template for the Python object. It lets Python know exactly what attributes and methods any object created from that class should have. It also provides instructions on what to do when creating OR destroying any given object
+
+--Instance
+An instance of a Python class is a singular Python object created using the template of a class that holds values or data that is unique to that instance. When methods are run they typically only change values inside a singular instance
+
+--Attributes
+Any given object has some attributes associated with it. These are values / data stored within the Python object that are tied to that specific object. You can access and use this data. Often some or all of the data associated with attributes is defined at the time an object is created, but this is not required and often values can be changed when needed.
+
+--Methods
+Any given object has methods associated with it. When creating a Python object the class will define the object's methods. These are functions tied to an instance. When you run a method it typically uses the attribute data as well as some data you give it to do one of a couple things:
+-Change what the data inside the attributes are
+-Return data from the attribute values
+-Return data about the attributes of that object
+
+--Object lifecycle
+class Student:
+    grade = 100
+    
+    def __init__(self):
+        self.age = age
+        print('I am created at the age of', self.age)
+    
+    def party(self):
+        self.grade -= 10
+        print('I partied so hard my grade is:', self.grade)
+
+karen = Student(42)  # We only give it one parameter
+print(karen.age)  # Note how age is what we gave it
+>> 42
+
+karen.party()
+>> I partied so hard my grade is: 90
+
+--Inheritance
+class Student:
+    grade = 100
+    
+    def __init__(self, age):
+        self.age = age
+        print('I am created at the age of', self.age)
+    
+    def party(self):
+        self.grade -= 10
+        print('I partied so hard my grade is:', self.grade)
+
+class good_Student(Student):
+    
+    def study(self):
+        self.grade += 10
+        print('I worked hard and studied to bring my grade up to:', self.grade)
+
+-parent class
+steve = Student(15)
+
+steve.party()
+>> I am created at the age of 15
+>> I partied so hard my grade is: 90
+
+steve.study() # Inheriting from a parent class DOES NOT change the parent class
+>> AttributeError: 'Student' object has no attribute 'study'
+
+-inherited class
+ellen = good_Student(17)
+
+ellen.party()
+>> I am created at the age of 17
+>> I partied so hard my grade is: 90
+
+ellen.study()
+>> I worked hard and studied to bring my grade up to: 100
+
+
+
+
+
 
 14: SQL
 ============================
