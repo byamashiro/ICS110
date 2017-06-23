@@ -39,7 +39,7 @@ for i in counter.keys():
 		stock_price_close = float(line[6])
 			#print(stock_symbol, stock_price_open, stock_price_close)
 		if stock_symbol == str(i):
-			if (stock_price_open > 32 and stock_price_open < 420) and (stock_price_close > 32 and stock_price_close < 422):
+			if (stock_price_open > 30 and stock_price_open < 420) and (stock_price_close > 32 and stock_price_close < 422):
 				#print('both sets of bounds', stock_symbol, stock_price_open, stock_price_close)
 				counter_both_ib += 1
 	if counter_both_ib > 0:
