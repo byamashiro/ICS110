@@ -49,6 +49,7 @@ print(list_st_over)
 
 with open("assignment_gamma_result.csv",'w') as resultFile:
 	wr = csv.writer(resultFile, dialect='excel')
+	#wr.writerow([list_st_over[0],list_st_over[1]]) #this will print it out on one line
 	wr.writerow([list_st_over[0],list_st_over[1]])
 	wr.writerow([list_st_over[2],list_st_over[3]])
 	wr.writerow([list_st_over[4],list_st_over[5]])
