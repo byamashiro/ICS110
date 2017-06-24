@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime
 import sys
-import glob
 
 
 
@@ -36,42 +35,37 @@ end = datetime.date( year = int(f'{end_date[0:4]}'), month = int(f'{end_date[4:6
 
 radio_df = pd.DataFrame([])
 
+'''
 for date in daterange( start, end ):
 	try:
 		event_date = str(date).replace('-','')
 		print(event_date[0:6])
 		print(f'{full_radio_path}/wind{event_date[0:6]}.txt')
-		radio_df_ind = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',delim_whitespace=True, comment='#', header = 0, skiprows=39, skipfooter=3) #, header=0)
+		radio_df_ind = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',delim_whitespace=True, comment='#', skiprows=3) #, skipfooter=3) #, header=0)
 		#print(radio_df_ind)
-		radio_df = radio_df.append(radio_df_ind)
+		#radio_df = radio_df.append(radio_df_ind)
 	except:
 		print(f'Missing data for {date}')
 		continue
+'''
+event_date = str(start).replace('-','')
+print(event_date[0:6])
 
+list_header = list(range(258))
+
+
+print(f'{full_radio_path}/wind{event_date[0:6]}.txt')
+radio_df = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',delim_whitespace=True ,skiprows=40, names=list_header, skipfooter=3) #, header=0)
+#print(radio_df_ind)
+#radio_df = radio_df.append(radio_df_ind)
 #print(radio_df)
 
-print(radio_df)
-sys.exit(0)
-
-radio_time = pd.to_datetime(radio_df[0:1]) #xray_time = xray_df[['time_tag']]
-print(radio_time)
 
 
+radio_time = pd.to_datetime(radio_df[0] + ' ' + radio_df[1], dayfirst=True) #xray_time = xray_df[['time_tag']]
+radio_average = radio_df.mean(axis=1, numeric_only=True)
 
-radio_df['avg'] = radio_df.mean(axis=1, numeric_only=True)
-
-
-
-radio_df.loc[radio_df['P3W_UNCOR_FLUX'] <= 0.0] = np.nan #11.6 MeV
-radio_df.loc[radio_df['P4W_UNCOR_FLUX'] <= 0.0] = np.nan #30.6 MeV
-radio_df.loc[radio_df['P5W_UNCOR_FLUX'] <= 0.0] = np.nan #63.1 MeV
-radio_df.loc[radio_df['P6W_UNCOR_FLUX'] <= 0.0] = np.nan #165 MeV
-
-
-radio_3W_flux = radio_df['P3W_UNCOR_FLUX']	#11.6 MeV
-radio_4W_flux = radio_df['P4W_UNCOR_FLUX']	#30.6 MeV
-radio_5W_flux = radio_df['P5W_UNCOR_FLUX']	#63.1 MeV
-radio_6W_flux = radio_df['P6W_UNCOR_FLUX']	#165 MeV
+result = pd.concat([radio_time, radio_average], axis=1, ignore_index=True)
 
 #=========xray flux
 myFmt = mdates.DateFormatter('%m/%d\n%H:%M')
@@ -79,17 +73,14 @@ myFmt = mdates.DateFormatter('%m/%d\n%H:%M')
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-plt.plot(radio_time, radio_3W_flux, '-', color='red', label= '11.6 MeV')
-plt.plot(radio_time, radio_4W_flux, '-', color='orange', label = '30.6 MeV')
-plt.plot(radio_time, radio_5W_flux, '-', color='green', label= '63.1 MeV')
-plt.plot(radio_time, radio_6W_flux, '-', color='blue', label = '165 MeV')
+plt.plot(result[0], result[1], '-', color='blue', label= '11.6 MeV')
 
 plt.title('GOES-15 Proton Flux', fontname="Arial", fontsize = 14)
 plt.xlabel('Time', fontname="Arial", fontsize = 14)
 plt.ylabel('Flux [pfu]', fontname="Arial", fontsize = 14)
 plt.minorticks_on()
 plt.grid(True)
-plt.yscale('log')
+#plt.yscale('log')
 plt.legend(loc='lower right')
 #plt.savefig('xray.pdf', format='pdf', dpi=900)
 plt.tight_layout()

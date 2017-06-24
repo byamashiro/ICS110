@@ -1,7 +1,7 @@
 import pandas as pd
 from pandas import Series
 
-bacteria_lengths = Series(range(1,5001), name='length')
+bacteria_lengths = Series(range(1,5001,100), name='length')
 
 #print(bacteria_lengths)
 print(bacteria_lengths[23])
