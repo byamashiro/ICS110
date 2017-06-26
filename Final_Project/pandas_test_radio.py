@@ -51,29 +51,37 @@ for date in daterange( start, end ):
 event_date = str(start).replace('-','')
 print(event_date[0:6])
 
-list_header = list(range(258))
+list_header = [str(i) for i in range(258)]
 
 
 print(f'{full_radio_path}/wind{event_date[0:6]}.txt')
-radio_df = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',delim_whitespace=True ,skiprows=40, names=list_header, skipfooter=3) #, header=0)
+
+dateparse = lambda x: pd.datetime.strptime(x, '%d-%m-%Y %H:%M:%S.%f')
+
+radio_df = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',delim_whitespace=True ,skiprows=40, names=list_header, skipfooter=3, parse_dates=[['0', '1']], date_parser=dateparse, index_col='0',keep_date_col=True) #, header=0)
+radio_df['avg'] = radio_df.mean(axis=1, numeric_only=True)
+#radio_df.loc[radio_df['avg'] <= 0.0] = np.nan #11.6 MeV
+
+
+
+#radio_df['avg'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')] #gold line
+
 #print(radio_df_ind)
 #radio_df = radio_df.append(radio_df_ind)
 #print(radio_df)
+#print(radio_df)
 
 
-
-radio_time = pd.to_datetime(radio_df[0] + ' ' + radio_df[1], dayfirst=True) #xray_time = xray_df[['time_tag']]
-radio_average = radio_df.mean(axis=1, numeric_only=True)
-
-result = pd.concat([radio_time, radio_average], axis=1, ignore_index=True)
-
+#radio_time = pd.to_datetime(radio_df['0'] + ' ' + radio_df['1'], dayfirst=True) #xray_time = xray_df[['time_tag']]
+#radio_average = radio_df.mean(axis=1, numeric_only=True)
+#result = pd.concat([radio_time, radio_average], axis=1, ignore_index=True)
 #=========xray flux
 myFmt = mdates.DateFormatter('%m/%d\n%H:%M')
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-plt.plot(result[0], result[1], '-', color='blue', label= '11.6 MeV')
+plt.plot(radio_df['0_1'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')], radio_df['avg'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')], '-', color='blue', label= '11.6 MeV')
 
 plt.title('GOES-15 Proton Flux', fontname="Arial", fontsize = 14)
 plt.xlabel('Time', fontname="Arial", fontsize = 14)
