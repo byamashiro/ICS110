@@ -47,3 +47,8 @@ print('='*30)
 '''
 for i in range(8):
 	print(fin.columns.values[i])
+
+print('='*30)
+print('A sample of similar rows include: ', same_ip)
+print('Unique values stored in payload: ' ,unique_payload)
+
