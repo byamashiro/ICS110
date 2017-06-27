@@ -1055,3 +1055,439 @@ conn.close() # remember to close out or database will be locked on following run
 
 
 
+15: Pandas Dataframes and Series
+====================================
+--pandas is one of the premier data analysis libraries in the Python ecosystem. It offers high-performance, easy-to-use data structures and data analysis tools enabling you to carry out your entire data analysis workflow.
+
+--simple example of loading series
+import pandas as pd
+from pandas import Series
+
+s = Series([33, 37, 27, 42])
+s.name = 'Justice League ages'
+s.index = ['bruce', 'selina', 'kara', 'clark']
+
+
+--indexing pandas series and index manipulation
+s1 = Series([37, 36, 10, 36],
+            index=['hal', 'victor', 'diana', 'billy'],
+            name='More Justice League ages')
+
+s1['billy']
+>> 36
+
+
+s1[['billy', 'victor', 'hal']]
+>> billy     36
+>> victor    36
+>> hal       37
+>> Name: More Justice League ages, dtype: int64
+
+s1['hal':'diana'] # s1[0:3] slice notation still works with string-base index
+>> hal       37
+>> victor    36
+>> diana     10
+>> Name: More Justice League ages, dtype: int64
+
+
+s1['diana'] = 32 # changes content of 'diana' from 10 -> 32
+
+
+s1[s1 >= 35] # rows can be filtered with comparison operators (==, <=, >=)
+
+s1[['diana', 'billy']]*20 # changed both indices temporarily by * 20
+
+
+'diana' in s1 # boolean
+>> True
+
+'lex' in s1
+>> False
+
+
+--Analyzing data
+s1 = Series(range(10, 16), index=['a', 'b', 'c', 'd', 'e', 'f'])
+s2 = Series(range(16, 22), index=['a', 'b', 'c', 'x', 'y', 'z'])
+
+s3 = s1 + s2
+s3
+>> a    26.0
+>> b    28.0
+>> c    30.0
+>> d     NaN
+>> e     NaN
+>> f     NaN
+>> x     NaN
+>> y     NaN
+>> z     NaN
+>> dtype: float64
+
+s3.isnull()
+>> a    False
+>> b    False
+>> c    False
+>> d     True
+>> e     True
+>> f     True
+>> x     True
+>> y     True
+>> z     True
+>> dtype: bool
+
+s3.dropna()
+>> a    26.0
+>> b    28.0
+>> c    30.0
+>> dtype: float64
+
+
+s4 = Series([42, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 5, 6])
+s4
+>> 0     42
+>> 1      1
+>> 2      1
+>> 3      1
+>> 4      2
+>> 5      2
+>> 6      3
+>> 7      3
+>> 8      3
+>> 9      3
+>> 10     3
+>> 11     3
+>> 12     4
+>> 13     5
+>> 14     6
+>> dtype: int64
+
+s4.unique()
+>> array([42,  1,  2,  3,  4,  5,  6])
+
+s4.value_counts()
+>> 3     6
+>> 1     3
+>> 2     2
+>> 42    1
+>> 6     1
+>> 5     1
+>> 4     1
+>> dtype: int64
+
+s4.max() # note that pandas has unique methods relative to python
+>> 42
+
+
+def transmogrifier(x):
+    new_val = '- ' + str(x ** 3) + ' -'
+    return new_val
+
+s4.apply(transmogrifier)
+>> 0     - 74088 -
+>> 1         - 1 -
+>> 2         - 1 -
+>> 3         - 1 -
+>> 4         - 8 -
+>> 5         - 8 -
+>> 6        - 27 -
+>> 7        - 27 -
+>> 8        - 27 -
+>> 9        - 27 -
+>> 10       - 27 -
+>> 11       - 27 -
+>> 12       - 64 -
+>> 13      - 125 -
+>> 14      - 216 -
+>> dtype: object
+
+--Pandas data frames
+from pandas import DataFrame
+data = {'hero': ['billy', 'billy', 'billy', 'selina', 'selina'],
+        'date': ['Jan 10', 'Jan 11', 'Jan 12', 'Jan 10', 'Jan 11'],
+        'emails': [111, 121, 93, 211, 210]}
+
+df = DataFrame(data, columns=['date', 'hero', 'emails', 'instagrams']) # since 'instagrams' doesn't exist, column will be populated with "NaN"
+>>      date    hero  emails instagrams
+>> 0  Jan 10   billy     111        NaN
+>> 1  Jan 11   billy     121        NaN
+>> 2  Jan 12   billy      93        NaN
+>> 3  Jan 10  selina     211        NaN
+>> 4  Jan 11  selina     210        NaN
+
+
+df.index = [1, 2, 3, 4, 5] # changes row indexing starting from 1 instead of 0
+
+df.columns
+>> Index(['date', 'hero', 'emails', 'instagrams'], dtype='object')
+
+
+df['hero'] # df.hero also works
+>> 1     billy
+>> 2     billy
+>> 3     billy
+>> 4    selina
+>> 5    selina
+>> Name: hero, dtype: object
+
+df.loc[3] # outputs the third option
+>> date          Jan 12
+>> hero           billy
+>> emails            93
+>> instagrams       NaN
+>> Name: 3, dtype: object
+
+
+df.loc[1:5:2] # rows by 2 from 1 through 5
+>>      date    hero  emails instagrams
+>> 1  Jan 10   billy     111        NaN
+>> 3  Jan 12   billy      93        NaN
+>> 5  Jan 11  selina     210        NaN
+
+
+from pandas import Series
+df.instagrams = 50
+ins = Series([10, 20, 30], index=[1, 3, 5])
+ins
+>> 1    10
+>> 3    20
+>> 5    30
+>> dtype: int64
+
+
+df.instagrams
+>> 1    50
+>> 2    50
+>> 3    50
+>> 4    50
+>> 5    50
+>> Name: instagrams, dtype: int64
+
+
+df.instagrams = ins # instead of neatly changing index 1,3,5 the other values are replaced with "NaN"
+df
+>>      date    hero  emails  instagrams
+>> 1  Jan 10   billy     111        10.0
+>> 2  Jan 11   billy     121         NaN
+>> 3  Jan 12   billy      93        20.0
+>> 4  Jan 10  selina     211         NaN
+>> 5  Jan 11  selina     210        30.0
+
+
+df['overworked'] = df['emails'] >= 120
+df
+>>      date    hero  emails  instagrams  overworked
+>> 1  Jan 10   billy     111        10.0       False
+>> 2  Jan 11   billy     121         NaN        True
+>> 3  Jan 12   billy      93        20.0       False
+>> 4  Jan 10  selina     211         NaN        True
+>> 5  Jan 11  selina     210        30.0        True
+
+
+df[df.date == 'Jan 10'] # dataframes are mutable: columns can be added at will
+>>      date    hero  emails  instagrams  overworked
+>> 1  Jan 10   billy     111        10.0       False
+>> 4  Jan 10  selina     211         NaN        True
+
+
+data = {'billy': {'Jan 10': 202, 'Jan 11': 220, 'Jan 12': 198},
+        'selina': {'Jan 09': 246, 'Jan 10': 235, 'Jan 11': 243}}
+df2 = DataFrame(data) # data frame using dictionaries with nested dictionaries
+df2
+>>         billy  selina
+>> Jan 09    NaN   246.0
+>> Jan 10  202.0   235.0
+>> Jan 11  220.0   243.0
+>> Jan 12  198.0     NaN
+
+-Transpose a data frame (i.e rows <-> columns)
+dft = df2.T
+dft
+>>         Jan 09  Jan 10  Jan 11  Jan 12
+>> billy      NaN   202.0   220.0   198.0
+>> selina   246.0   235.0   243.0     NaN
+
+
+nums = Series(range(10, 16),
+              index=['t', 'u', 'v', 'x', 'y', 'z'])
+nums
+>> t    10
+>> u    11
+>> v    12
+>> x    13
+>> y    14
+>> z    15
+>> dtype: int64
+
+i = nums.index
+i
+>> Index(['t', 'u', 'v', 'x', 'y', 'z'], dtype='object')
+
+i[4]
+>> 'y'
+
+i[2:4] # index from 2 but not including 4
+>> Index(['v', 'x'], dtype='object')
+
+i[::2] # 1st and every following 2 index
+>> Index(['t', 'v', 'y'], dtype='object')
+
+i[::3] # 1st and every following 3 index
+>> Index(['t', 'x'], dtype='object')
+
+
+
+-methods with pandas dataframes
+logs.fm_ip.unique()
+logs.name.value_counts()
+logs.name.head(7) # prints sample data
+g = logs.groupby(logs.fm_ip)
+g.get_group('106.152.115.161').head(3)
+
+logs.columns
+
+tf = logs.fm_ip == logs.to_ip
+
+logs[['fm_ip', 'to_ip']].head(12)
+
+
+
+16: Pandas read and write
+===============================
+--csv module
+import pandas as pd
+from pandas import Series, DataFrame
+
+# webdata = pd.read_clipboard() # from html table sample_table.html, copy table direct
+
+
+named_cols = pd.read_csv('log_file.csv',
+                         names=['name', 
+                                'email', 
+                                'fmip', 
+                                'toip',
+                                'datetime', 
+                                'lat', 
+                                'long', 
+                                'payload'])
+
+
+skipped_rows = pd.read_csv('log_file.csv', 
+                           names=['name', 'email', 'fmip', 'toip',
+                                  'datetime', 'lat', 'long', 'payload'],
+                           skiprows=[1, 2, 3, 7, 9])  # skiprows=range(1,10,3)
+                           
+skipped_rows.fmip # looking at one column 'fmip'
+
+-separator value in separated values
+sep='|'
+
+-quick view of top or bottom values
+piped_data.tail(4) # bottom 4 values
+piped_data.head(4) # top 4 values
+
+-choose index for data frame
+import pandas as pd
+date_index = pd.read_csv('log_file.csv', 
+                         names=['name', 'email', 'fmip', 'toip',
+                                'datetime', 'lat', 'long', 'payload'],
+                         index_col='datetime')
+
+
+-finding rows based off of index
+date_index.loc['2016-02-06T21:44:56':'2016-02-06T21:49:36']
+
+
+-Checking for NaN status and converting the particular values to an pandas NaN flag might not be optimal when loading data. You can turn this process off.
+na_filter=False
+
+
+-specify na_values to represent na values
+na_values=['', '9999']
+
+na_values=['', '9999'],
+keep_default_na=False
+
+
+-specify how many rows pandas should read
+nrows=7
+
+-read data in chunk by chunk for memory allocation optimization
+data = pd.read_csv('log_file.csv', 
+                   names=['name', 'email', 'fmip', 
+                          'toip', 'datetime', 'lat',
+                          'long', 'payload'],
+                   chunksize=3)
+
+for chunk in data:
+    print('\npre-processing')
+    print('more pre-processing')
+    print('even more pre-processing')
+    print(chunk)
+    print('post processing\n')
+
+
+-functions to transform one or more columns
+def dsplitter(address):
+    userid, domain = address.split('@')
+    return userid, domain
+
+def date_only(datetime):
+    return datetime.split('T')[0]
+
+
+data = pd.read_csv('log_file.csv', 
+                   names=['name', 'email', 'fmip',
+                          'toip', 'datetime', 'lat',
+                          'long', 'payload'],
+                   converters={'email':dsplitter,
+                               'datetime':date_only})
+
+
+-use only certain columns in a data file that is read in 
+data = pd.read_csv('log_file.csv', 
+                   names=['name', 'email', 'fmip',
+                          'toip', 'datetime', 'lat',
+                          'long', 'payload'],
+                   usecols=['email', 'fmip', 'toip'])
+
+
+--SQL with pandas
+-pandas can read sql databases easily
+
+import sqlite3
+conn = sqlite3.connect('log_file.sql')
+cur = conn.cursor()
+
+df = pd.read_sql("SELECT * FROM superheroes", conn) # superheroes is a table in sql db
+
+
+df1 = pd.read_sql('''SELECT datetime, email, lat, long FROM superheroes
+                          WHERE name LIKE "%wayne%"''', conn)
+
+
+df2 = pd.read_sql('''SELECT datetime, email, lat, long
+                     FROM superheroes
+                     WHERE name LIKE "%wayne%"''',
+                  conn,
+                  index_col='datetime')
+
+
+--writing to disk
+df2.to_csv('class_out.csv',
+           cols=['email', 'lat', 'long', 'name'],
+           header=True, sep='|')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
