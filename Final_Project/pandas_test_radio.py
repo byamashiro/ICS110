@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime
 import sys
+import time
+from mpl_toolkits.mplot3d import Axes3D
 
 
 
@@ -51,19 +53,26 @@ for date in daterange( start, end ):
 event_date = str(start).replace('-','')
 print(event_date[0:6])
 
-list_header = [str(i) for i in range(258)]
+#list_header = [str(i) for i in range(258)]
+list_header = [str(i) for i in range(12,1041,4)]
 
 
 print(f'{full_radio_path}/wind{event_date[0:6]}.txt')
 
 dateparse = lambda x: pd.datetime.strptime(x, '%d-%m-%Y %H:%M:%S.%f')
 
-radio_df = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',delim_whitespace=True ,skiprows=40, names=list_header, skipfooter=3, parse_dates=[['0', '1']], date_parser=dateparse, index_col='0',keep_date_col=True) #, header=0)
+
+#start_time = time.clock()
+#radio_df = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',engine = 'python',delim_whitespace=True ,skiprows=40, names=list_header, skipfooter=3, parse_dates=[['12', '16']], date_parser=dateparse, index_col='12',keep_date_col=True, na_filter = False) #, header=0)
+radio_df = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',engine = 'python',delim_whitespace=True ,skiprows=40, names=list_header, skipfooter=3, parse_dates=[['12', '16']], date_parser=dateparse,keep_date_col=True, na_filter = False) #, header=0)
+
 radio_df['avg'] = radio_df.mean(axis=1, numeric_only=True)
 #radio_df.loc[radio_df['avg'] <= 0.0] = np.nan #11.6 MeV
+#end_time = time.clock()
 
+#print(end_time - start_time)
 
-
+#sys.exit(0)
 #radio_df['avg'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')] #gold line
 
 #print(radio_df_ind)
@@ -81,7 +90,17 @@ myFmt = mdates.DateFormatter('%m/%d\n%H:%M')
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-plt.plot(radio_df['0_1'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')], radio_df['avg'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')], '-', color='blue', label= '11.6 MeV')
+
+
+#========reshaping z
+
+z = list(radio_df.loc[0].loc['20':'1040'])
+z = z.reshape((len(x), len(y)))
+
+#=========end reshaping z
+
+#plt.plot(radio_df['12_16'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')], radio_df['avg'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')], '-', color='blue', label= '11.6 MeV')
+plt.contourf(radio_df.loc[0].loc['12_16'],radio_df.columns.values[3:259], ))
 
 plt.title('GOES-15 Proton Flux', fontname="Arial", fontsize = 14)
 plt.xlabel('Time', fontname="Arial", fontsize = 14)
@@ -93,8 +112,19 @@ plt.legend(loc='lower right')
 #plt.savefig('xray.pdf', format='pdf', dpi=900)
 plt.tight_layout()
 
-
+#ax = fig.gca(projection='3d')
+'''
+threedee = plt.figure().gca(projection='3d')
+threedee.scatter(radio_df.loc[0].loc['12_16'],radio_df.columns.values[3:259], radio_df.loc[0].loc['20':'1040'])
+threedee.set_xlabel('Index')
+threedee.set_ylabel('H-L')
+threedee.set_zlabel('Close')
+ax.xaxis.set_major_formatter(myFmt)
+'''
 ax.xaxis.set_major_formatter(myFmt)
 
 plt.show()
-#plt.clf()
+
+#ax.xaxis.set_major_formatter(myFmt)
+#plt.show()
+#plt.clf() # dont include
