@@ -1479,7 +1479,444 @@ df2.to_csv('class_out.csv',
 
 
 
+17: Pandas data handling
+===============================
+--Merging data
+import pandas as pd
+from pandas import DataFrame, Series
 
+readers1 = pd.read_csv('reader_stats.csv')
+readers2 = pd.read_csv('reader_stats_short.csv')
+
+
+readerso = pd.merge(readers1, readers2, how='outer') # all and overlap
+readersi = pd.merge(readers1, readers2, how='inner') # only overlap
+readersl = pd.merge(readers1, readers2, how='left')  # left and overlap
+readersr = pd.merge(readers1, readers2, how='right') # right and overlap
+
+
+--key columns to create joins
+-use the 'on' option to sort the data
+dfa = DataFrame({'key':     ['bruce', 'bruce', 'diana', 'bruce', 'hal', 'diana', 'kara'],
+                 'emails_left': [112, 111, 201, 109, 113, 203, 204]}) 
+
+dfb = DataFrame({'key':        ['hal', 'bruce', 'selina', 'diana'],
+                 'ages_right': [36, 37, 33, 34]})
+
+dfl = pd.merge(dfa, dfb, on='key', how='left')
+dfi = pd.merge(dfa, dfb, on='key', how='inner')
+
+
+--concatenation
+names1 = Series(['wayne', 'jordan'], index=[1, 2])
+names2 = Series(['dinah', 'kent'], index=[4, 5])
+names3 = Series(['rayner', 'gordon', 'grayson'], index=[6, 7, 8])
+
+pd.concat([names1, names3, names2], axis=0)
+>> 1      wayne
+>> 2     jordan
+>> 6     rayner
+>> 7     gordon
+>> 8    grayson
+>> 4      dinah
+>> 5       kent
+>> dtype: object
+
+
+names4 = pd.concat([names1, names3])
+pd.concat([names1, names4], axis=1)
+>>         0        1
+>> 1   wayne    wayne
+>> 2  jordan   jordan
+>> 6     NaN   rayner
+>> 7     NaN   gordon
+>> 8     NaN  grayson
+
+
+output = pd.concat([names1, names3, names3], keys=['rho', 'sigma', 'tau'])
+output
+>> rho    1      wayne
+>>        2     jordan
+>> sigma  6     rayner
+>>        7     gordon
+>>        8    grayson
+>> tau    6     rayner
+>>        7     gordon
+>>        8    grayson
+>> dtype: object
+
+
+output = pd.concat([names1, names3, names3], axis=1, keys=['rho', 'sigma', 'tau'])
+output
+>>       rho    sigma      tau
+>> 1   wayne      NaN      NaN
+>> 2  jordan      NaN      NaN
+>> 6     NaN   rayner   rayner
+>> 7     NaN   gordon   gordon
+>> 8     NaN  grayson  grayson
+
+
+
+
+dfa = pd.DataFrame([[11, 21, 31, 41],
+                 [13, 25, 32, 49],
+                 [11, 21, 31, 41],
+                 [11, 21, 31, 42]], columns=['iota', 'kappa', 'lambda', 'mu'])
+
+dfb = pd.DataFrame([[55, 66, 77],
+                 [53, 63, 73]], columns=['kappa', 'lambda', 'mu'])
+
+print(dfa)
+print(dfb)
+>>    iota  kappa  lambda  mu
+>> 0    11     21      31  41
+>> 1    13     25      32  49
+>> 2    11     21      31  41
+>> 3    11     21      31  42
+>>    kappa  lambda  mu
+>> 0     55      66  77
+>> 1     53      63  73
+
+
+
+pd.concat([dfa, dfb], ignore_index=True) # does not order index like the above prints
+>>    iota  kappa  lambda  mu
+>> 0  11.0     21      31  41
+>> 1  13.0     25      32  49
+>> 2  11.0     21      31  41
+>> 3  11.0     21      31  42
+>> 4   NaN     55      66  77
+>> 5   NaN     53      63  73
+
+
+
+
+import numpy as np
+
+df = DataFrame(np.arange(100, 115).reshape((3, 5)),
+               index=pd.Index(['kara', 'dinah', 'selina'], name='justiceleague'),
+               columns=pd.Index(['wed', 'thu', 'fri', 'sat', 'sun'], name='day'))
+df
+>> day            wed  thu  fri  sat  sun
+>> justiceleague                         
+>> kara           100  101  102  103  104
+>> dinah          105  106  107  108  109
+>> selina         110  111  112  113  114
+
+
+df.unstack() # The default level to unstack is the innermost
+>> day  justiceleague
+>> wed  kara             100
+>>      dinah            105
+>>      selina           110
+>> thu  kara             101
+>>      dinah            106
+>>      selina           111
+>> fri  kara             102
+>>      dinah            107
+>>      selina           112
+>> sat  kara             103
+>>      dinah            108
+>>      selina           113
+>> sun  kara             104
+>>      dinah            109
+>>      selina           114
+>> dtype: int64
+
+
+s = df.unstack()
+s['wed']['kara']
+>> 100
+
+--multi index
+arrays = [['bar', 'bar', 'baz', 'baz', 'foo', 'foo', 'qux', 'qux'],
+          ['one', 'two', 'one', 'two', 'one', 'two', 'one', 'two']]
+
+tuples = list(zip(*arrays))
+index = pd.MultiIndex.from_tuples(tuples, names=['first', 'second'])
+index
+>> MultiIndex(levels=[['bar', 'baz', 'foo', 'qux'], ['one', 'two']],
+>>            labels=[[0, 0, 1, 1, 2, 2, 3, 3], [0, 1, 0, 1, 0, 1, 0, 1]],
+>>            names=['first', 'second'])
+
+s = pd.Series(np.random.randn(8), index=index)
+s
+>> first  second
+>> bar    one      -1.437069
+>>        two      -1.005649
+>> baz    one       0.093091
+>>        two      -0.637180
+>> foo    one       1.257936
+>>        two      -0.786610
+>> qux    one       0.917287
+>>        two       0.532761
+>> dtype: float64
+
+s.unstack(1)
+>> second       one       two
+>> first                     
+>> bar    -1.437069 -1.005649
+>> baz     0.093091 -0.637180
+>> foo     1.257936 -0.786610
+>> qux     0.917287  0.532761
+
+
+s.unstack(0)
+>> first        bar       baz       foo       qux
+>> second                                        
+>> one    -1.437069  0.093091  1.257936  0.917287
+>> two    -1.005649 -0.637180 -0.786610  0.532761
+
+s.unstack('second') # NOTE: You can refer to the level to unstack by the name of the Index.
+>> second       one       two
+>> first                     
+>> bar    -1.437069 -1.005649
+>> baz     0.093091 -0.637180
+>> foo     1.257936 -0.786610
+>> qux     0.917287  0.532761
+
+
+--pivot table
+league = DataFrame([['2016-03-10T00:00:00', 'jordan', 221],
+                    ['2016-03-10T00:00:00', 'wayne', 222],
+                    ['2016-03-10T00:00:00', 'kyle', 345],
+                    ['2016-03-11T00:00:00', 'jordan', 222],
+                    ['2016-03-11T00:00:00', 'wayne', 223],
+                    ['2016-03-11T00:00:00', 'kyle', 323],
+                    ['2016-03-12T00:00:00', 'jordan', 201],
+                    ['2016-03-12T00:00:00', 'wayne', 209],
+                    ['2016-03-12T00:00:00', 'kyle', 340],
+                    ['2016-03-13T00:00:00', 'jordan', 220],
+                    ['2016-03-13T00:00:00', 'wayne', 223],
+                    ['2016-03-13T00:00:00', 'kyle', 339],
+                    ['2016-03-14T00:00:00', 'jordan', 201],
+                    ['2016-03-14T00:00:00', 'wayne', 219],
+                    ['2016-03-14T00:00:00', 'kyle', 345]],
+                    columns=['timestamp', 'jleague', 'tweets'])
+
+tweet_view = league.pivot('timestamp', 'jleague', 'tweets')
+tweet_view
+>> jleague              jordan  kyle  wayne
+>> timestamp                               
+>> 2016-03-10T00:00:00     221   345    222
+>> 2016-03-11T00:00:00     222   323    223
+>> 2016-03-12T00:00:00     201   340    209
+>> 2016-03-13T00:00:00     220   339    223
+>> 2016-03-14T00:00:00     201   345    219
+
+
+league['fan_index'] = abs(np.random.randn(len(league)))
+league
+>>               timestamp jleague  tweets  fan_index
+>> 0   2016-03-10T00:00:00  jordan     221   0.428804
+>> 1   2016-03-10T00:00:00   wayne     222   0.424633
+>> 2   2016-03-10T00:00:00    kyle     345   0.129457
+>> 3   2016-03-11T00:00:00  jordan     222   0.737199
+>> 4   2016-03-11T00:00:00   wayne     223   1.560835
+>> 5   2016-03-11T00:00:00    kyle     323   0.474609
+>> 6   2016-03-12T00:00:00  jordan     201   0.279182
+>> 7   2016-03-12T00:00:00   wayne     209   0.915738
+>> 8   2016-03-12T00:00:00    kyle     340   0.662283
+>> 9   2016-03-13T00:00:00  jordan     220   0.777396
+>> 10  2016-03-13T00:00:00   wayne     223   1.021849
+>> 11  2016-03-13T00:00:00    kyle     339   1.173358
+>> 12  2016-03-14T00:00:00  jordan     201   1.004975
+>> 13  2016-03-14T00:00:00   wayne     219   0.397957
+>> 14  2016-03-14T00:00:00    kyle     345   0.458432
+
+
+
+tweet_view2 = league.pivot('timestamp', 'jleague')
+tweet_view2
+>>                     tweets            fan_index                    
+>> jleague             jordan kyle wayne    jordan      kyle     wayne
+>> timestamp                                                          
+>> 2016-03-10T00:00:00    221  345   222  0.428804  0.129457  0.424633
+>> 2016-03-11T00:00:00    222  323   223  0.737199  0.474609  1.560835
+>> 2016-03-12T00:00:00    201  340   209  0.279182  0.662283  0.915738
+>> 2016-03-13T00:00:00    220  339   223  0.777396  1.173358  1.021849
+>> 2016-03-14T00:00:00    201  345   219  1.004975  0.458432  0.397957
+
+
+tweet_view2['fan_index']
+
+
+--removing duplicates and replacing values
+dfd = dfa
+dfd['zeta'] = [4, 1, 4, 1]
+dfd
+>>    iota  kappa  lambda  mu  zeta
+>> 0    11     21      31  41     4
+>> 1    13     25      32  49     1
+>> 2    11     21      31  41     4
+>> 3    11     21      31  42     1
+
+
+
+dfd.duplicated()
+>> 0    False
+>> 1    False
+>> 2     True
+>> 3    False
+>> dtype: bool
+
+
+dfd.duplicated(['iota', 'kappa'])
+>> 0    False
+>> 1    False
+>> 2     True
+>> 3     True
+>> dtype: bool
+
+
+dfd.drop_duplicates()
+>>   iota  kappa  lambda  mu  zeta
+>>0    11     21      31  41     4
+>>1    13     25      32  49     1
+>>3    11     21      31  42     1
+
+
+
+genders = {'selina kyle': '1',
+           'bruce wayne': '0',
+           'dinah lance': '1',
+           'hal jordan': '0',
+           'clark kent': '0',
+           'barry allen': '0',
+           'arthur curry': '0',
+           'billy batson': '0',
+           'barbara gordon': '1',
+           'kara zor-el': '1',
+           'john jones': '0',
+           'diana prince': '1',
+           'dick grayson': '0',
+           'john jones': '0',
+           'victor stone': '0',
+           'ray palmer': '0',
+           'john constantine': '0',
+           'kyle rayner': '0',
+           'wally west': '0'}
+
+
+it = pd.read_csv('ig_tweets.csv')
+it
+>>              jleague  igs  tweets
+>> 0       billy batson    7       6
+>> 1     barbara GORDON    3       8
+>> 2     barbara gordon    9       5
+>> 3   john constantiNe    4       6
+>> 4        dinah lance    7       7
+>> 5        selina kyle    4       3
+>> 6       diana prince    6       9
+...
+
+
+it['gender'] = it['jleague'].map(genders) # Uses a dictionary to map keys to values
+it
+>>              jleague  igs  tweets gender
+>> 0       billy batson    7       6      0
+>> 1     barbara GORDON    3       8    NaN
+>> 2     barbara gordon    9       5      1
+>> 3   john constantiNe    4       6    NaN
+>> 4        dinah lance    7       7      1
+>> 5        selina kyle    4       3      1
+>> 6       diana prince    6       9      1
+
+
+
+it['jleagueLower'] = it['jleague'].apply(str.lower)
+it
+>>              jleague  igs  tweets gender      jleagueLower
+>> 0       billy batson    7       6      0      billy batson
+>> 1     barbara GORDON    3       8    NaN    barbara gordon
+>> 2     barbara gordon    9       5      1    barbara gordon
+>> 3   john constantiNe    4       6    NaN  john constantine
+>> 4        dinah lance    7       7      1       dinah lance
+>> 5        selina kyle    4       3      1       selina kyle
+>> 6       diana prince    6       9      1      diana prince
+
+
+
+it['gender'] = it['jleagueLower'].map(genders)
+it
+>>              jleague  igs  tweets gender      jleagueLower
+>> 0       billy batson    7       6      0      billy batson
+>> 1     barbara GORDON    3       8      1    barbara gordon
+>> 2     barbara gordon    9       5      1    barbara gordon
+>> 3   john constantiNe    4       6      0  john constantine
+>> 4        dinah lance    7       7      1       dinah lance
+>> 5        selina kyle    4       3      1       selina kyle
+>> 6       diana prince    6       9      1      diana prince
+
+
+
+def gen_conv(name):
+    gen = genders[name.lower()]
+    if gen == '0':
+        return 'm'
+    elif gen == '1':
+        return 'f'
+
+it['gender'] = it['jleague'].apply(gen_conv) # using .apply allows for function use
+it
+>>              jleague  igs  tweets gender      jleagueLower
+>> 0       billy batson    7       6      m      billy batson
+>> 1     barbara GORDON    3       8      f    barbara gordon
+>> 2     barbara gordon    9       5      f    barbara gordon
+>> 3   john constantiNe    4       6      m  john constantine
+>> 4        dinah lance    7       7      f       dinah lance
+>> 5        selina kyle    4       3      f       selina kyle
+>> 6       diana prince    6       9      f      diana prince
+
+
+it.gender.replace(['f', 'm'], ['Female', 'Male']) # doesnt seem to work as planned
+>>              jleague  igs  tweets gender      jleagueLower
+>> 0       billy batson    7       6      m      billy batson
+>> 1     barbara GORDON    3       8      f    barbara gordon
+>> 2     barbara gordon    9       5      f    barbara gordon
+>> 3   john constantiNe    4       6      m  john constantine
+>> 4        dinah lance    7       7      f       dinah lance
+>> 5        selina kyle    4       3      f       selina kyle
+>> 6       diana prince    6       9      f      diana prince
+
+
+
+--bins
+msgs = it.tweets
+bins = [2, 5, 9, 15]
+
+categories = pd.cut(msgs, bins)
+categories
+>> 0      (5, 9]
+>> 1      (5, 9]
+>> 2      (2, 5]
+>> 3      (5, 9]
+>> 4      (5, 9]
+>> 5      (2, 5]
+>> 6      (5, 9]
+
+
+pd.value_counts(categories)
+>> (5, 9]     20
+>> (9, 15]    17
+>> (2, 5]     13
+>> Name: tweets, dtype: int64
+
+
+labels = ['few', 'medium', "aren't there bad guys to catch"]
+it['workload'] = pd.cut(it.tweets, bins, labels=labels) # labels in place of bin, 'label' must be one less than len(bins)
+it
+>>                           workload  
+>> 0                           medium  
+>> 1                           medium  
+>> 2                              few  
+>> 3                           medium  
+>> 4                           medium  
+>> 5                              few  
+>> 6                           medium  
+
+
+-is there a way to optimize sql databases? isnt it just adding more data, never decreasing?
 
 
 

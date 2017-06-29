@@ -6,6 +6,7 @@ import datetime
 import sys
 import time
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
 
 
 
@@ -87,21 +88,20 @@ radio_df['avg'] = radio_df.mean(axis=1, numeric_only=True)
 #=========xray flux
 myFmt = mdates.DateFormatter('%m/%d\n%H:%M')
 
+''' un comment when done testing
 fig = plt.figure()
 ax = fig.add_subplot(111)
-
+'''
 
 
 #========reshaping z
-
-z = list(radio_df.loc[0].loc['20':'1040'])
-z = z.reshape((len(x), len(y)))
-
+#z = list(radio_df.loc[0].loc['20':'1040'])
+#z = z.reshape((len(x), len(y)))
 #=========end reshaping z
 
 #plt.plot(radio_df['12_16'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')], radio_df['avg'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')], '-', color='blue', label= '11.6 MeV')
-plt.contourf(radio_df.loc[0].loc['12_16'],radio_df.columns.values[3:259], ))
-
+#plt.contourf(radio_df.loc[0].loc['12_16'],radio_df.columns.values[3:259] )
+'''
 plt.title('GOES-15 Proton Flux', fontname="Arial", fontsize = 14)
 plt.xlabel('Time', fontname="Arial", fontsize = 14)
 plt.ylabel('Flux [pfu]', fontname="Arial", fontsize = 14)
@@ -111,20 +111,53 @@ plt.grid(True)
 plt.legend(loc='lower right')
 #plt.savefig('xray.pdf', format='pdf', dpi=900)
 plt.tight_layout()
-
+'''
 #ax = fig.gca(projection='3d')
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+
+'''
+full_day_list = []
+for i in range(24):
+	one_second_list = []
+
+	for j in range(256):
+	#one_day_list.append(radio_df.loc[0].loc['12_16'])
+		one_second_list.append(i)
+
+	full_day_list.append(one_second_list)
+'''
+one_day_list = []
+for i in range(256):
+	one_day_list.append(1.0)
+
+
+ax.plot(one_day_list, [float(i) for i in radio_df.columns.values[3:259]] , radio_df.loc[0].loc['20':'1040'])#,
+#                       linewidth=2) #, antialiased=False
+
+#surf = ax.plot_surface(one_day_list, [float(i) for i in radio_df.columns.values[3:259]] , radio_df.loc[0].loc['20':'1040'], cmap=cm.coolwarm,
+#                      linewidth=10, antialiased=False)
+#ax.set_zlim(1.0, 2.0)
+#ax.zaxis.set_major_locator(LinearLocator(10))
+#ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+#fig.colorbar(surf, shrink=0.5, aspect=5)
+
+plt.show()
 '''
 threedee = plt.figure().gca(projection='3d')
-threedee.scatter(radio_df.loc[0].loc['12_16'],radio_df.columns.values[3:259], radio_df.loc[0].loc['20':'1040'])
+threedee.scatter(one_day_list, radio_df.loc[0].loc['20':'1040'],radio_df.columns.values[3:259])
 threedee.set_xlabel('Index')
 threedee.set_ylabel('H-L')
 threedee.set_zlabel('Close')
-ax.xaxis.set_major_formatter(myFmt)
-'''
-ax.xaxis.set_major_formatter(myFmt)
+#ax.xaxis.set_major_formatter(myFmt)
+
+#ax.xaxis.set_major_formatter(myFmt)
 
 plt.show()
-
+'''
 #ax.xaxis.set_major_formatter(myFmt)
 #plt.show()
 #plt.clf() # dont include
