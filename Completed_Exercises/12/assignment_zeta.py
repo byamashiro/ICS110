@@ -1,4 +1,6 @@
 import pandas as pd
+import time
+start_time = time.clock()
 
 # Read the data from each file into separate pandas DataFrames using the .read_csv() method
 daily = pd.read_csv('AMEX_daily_prices_N.csv')
@@ -9,7 +11,7 @@ print(daily.head(7))
 print(dividends.head(7))
 
 
-print('=' * 30)
+#print('=' * 30)
 
 # merge on the stock_symbol column, as the key
 # merge using an inner join
@@ -21,3 +23,8 @@ df1 = pd.merge(daily, dividends, on='stock_symbol', how='inner')
 #print(df1)
 #print(df1[df1['date_y'] == '1991-06-24'])
 print(df1[df1['date_y'] == '1991-06-24'].stock_symbol.unique())
+
+
+end_time = time.clock()
+
+print('Time elapsed: ', (end_time - start_time))
