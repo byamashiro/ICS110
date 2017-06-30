@@ -50,6 +50,8 @@ print(f'Parsing Type III Data: [{event_obj_start_str} -- {event_obj_end_str}]')
 
 
 
+
+
 def daterange( start_date, end_date ):
     if start_date <= end_date: #
         for n in range( ( end_date - start_date ).days + 1 ):
@@ -67,25 +69,88 @@ full_radio_path = f'/Users/bryanyamashiro/Desktop/GoddardInternship2/Data_Reduct
 
 
 
-#===========Data input
+#===========Data
 start = datetime.date( year = int(f'{start_date[0:4]}'), month = int(f'{start_date[4:6]}') , day = int(f'{start_date[6:8]}') )
 end = datetime.date( year = int(f'{end_date[0:4]}'), month = int(f'{end_date[4:6]}') , day = int(f'{end_date[6:8]}') )
 
 
+
+
+
+
+
+
+
+
 radio_df = pd.DataFrame([])
 
+'''
+for date in daterange( start, end ):
+	try:
+		event_date = str(date).replace('-','')
+		print(event_date[0:6])
+		print(f'{full_radio_path}/wind{event_date[0:6]}.txt')
+		radio_df_ind = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',delim_whitespace=True, comment='#', skiprows=3) #, skipfooter=3) #, header=0)
+		#print(radio_df_ind)
+		#radio_df = radio_df.append(radio_df_ind)
+	except:
+		print(f'Missing data for {date}')
+		continue
+'''
 event_date_start = str(start).replace('-','')
 event_date_end = str(end).replace('-','')
+
+#print('Parsing Type III for: ', event_date)
+#print(event_date[0:6])
+
+#list_header = [str(i) for i in range(258)]
 list_header = [str(i) for i in range(12,1041,4)]
+
+
+#print(f'{full_radio_path}/wind{event_date[0:6]}.txt')
 
 dateparse = lambda x: pd.datetime.strptime(x, '%d-%m-%Y %H:%M:%S.%f')
 
-radio_df = pd.read_csv(f'{full_radio_path}/wind{event_date_start[0:6]}.txt',engine = 'python',delim_whitespace=True ,skiprows=40, names=list_header, skipfooter=3, parse_dates=[['12', '16']], date_parser=dateparse, index_col='12_16',keep_date_col=True, na_filter = False) #, header=0)
-radio_df['avg'] = radio_df.mean(axis=1, numeric_only=True)
 
-#====Plotting
+#start_time = time.clock()
+radio_df = pd.read_csv(f'{full_radio_path}/wind{event_date_start[0:6]}.txt',engine = 'python',delim_whitespace=True ,skiprows=40, names=list_header, skipfooter=3, parse_dates=[['12', '16']], date_parser=dateparse, index_col='12_16',keep_date_col=True, na_filter = False) #, header=0)
+
+#radio_df = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',engine = 'python',delim_whitespace=True ,skiprows=40, names=list_header, skipfooter=3, parse_dates=[['12', '16']], date_parser=dateparse, index_col='12',keep_date_col=True, na_filter = False) #, header=0)
+#radio_df = pd.read_csv(f'{full_radio_path}/wind{event_date[0:6]}.txt',engine = 'python',delim_whitespace=True ,skiprows=40, names=list_header, skipfooter=3, parse_dates=[['12', '16']], date_parser=dateparse,keep_date_col=True, na_filter = False) #, header=0)
+#sys.exit(0)
+radio_df['avg'] = radio_df.mean(axis=1, numeric_only=True)
+#radio_df.loc[radio_df['avg'] <= 0.0] = np.nan #11.6 MeV
+#end_time = time.clock()
+
+#print(end_time - start_time)
+
+#sys.exit(0)
+#radio_df['avg'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')] #gold line
+
+#print(radio_df_ind)
+#radio_df = radio_df.append(radio_df_ind)
+#print(radio_df)
+#print(radio_df)
+
+
+#radio_time = pd.to_datetime(radio_df['0'] + ' ' + radio_df['1'], dayfirst=True) #xray_time = xray_df[['time_tag']]
+#radio_average = radio_df.mean(axis=1, numeric_only=True)
+#result = pd.concat([radio_time, radio_average], axis=1, ignore_index=True)
+#=========xray flux
 
 myFmt = mdates.DateFormatter('%m/%d\n%H:%M')
+
+#fig,ax = plt.figure()
+
+#plt.plot(radio_df['12_16'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')], radio_df['avg'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')],
+#			'-', color='blue', label= '20 kHz - 1040 kHz')
+#plt.legend(loc='upper right', prop={'size':6})
+
+
+#plt.plot(radio_df['12_16'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')], radio_df['avg'].loc[start.strftime('%d-%m-%Y'):end.strftime('%d-%m-%Y')],
+#			'-', color='blue', label= '20 kHz - 1040 kHz')
+
+#radio_df['avg'].loc['2012-03-07 00':'2012-03-07 03'].plot() #style='ko'
 
 radio_df['avg'].loc[f'{event_date_start} {event_start}':f'{event_date_end} {event_end}'].plot(color='blue', label= '20 kHz - 1040 kHz')
 plt.title(f'WIND Type III Radio Bursts: RAD 1\n[{event_obj_start_str} -- {event_obj_end_str}]', fontname="Arial", fontsize = 14)
@@ -96,14 +161,45 @@ plt.grid(True)
 #plt.yscale('log')
 plt.legend(loc='upper right')
 plt.tight_layout()
-#plt.savefig('radio.pdf', format='pdf', dpi=900)
+#plt.savefig('xray.pdf', format='pdf', dpi=900)
 #ax = fig.add_subplot(111)
 ax = plt.gca()
 ax.xaxis.set_major_formatter(myFmt)
 plt.setp(ax.xaxis.get_majorticklabels(), rotation=0, horizontalalignment='center')
 
 
+
 end_time = time.clock()
+
 print(f'Elapsed Time: {round(end_time - start_time , 2)} seconds')
 
 plt.show()
+
+
+'''
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+
+
+#full_day_list = []
+#for i in range(24):
+#	one_second_list = []
+#
+#	for j in range(256):
+#	#one_day_list.append(radio_df.loc[0].loc['12_16'])
+#		one_second_list.append(i)
+#
+#	full_day_list.append(one_second_list)
+
+one_day_list = []
+for i in range(256):
+	one_day_list.append(1.0)
+
+
+ax.plot(one_day_list, [float(i) for i in radio_df.columns.values[3:259]] , radio_df.loc[0].loc['20':'1040'])#,
+#                       linewidth=2) #, antialiased=False
+'''
+
+#plt.clf() # dont include
