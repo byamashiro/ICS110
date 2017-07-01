@@ -7,7 +7,6 @@ import sys
 import time
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
-#cool update bro
 
 
 start_date = input('Enter a start date (yyyymmdd): ')
