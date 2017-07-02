@@ -5,8 +5,6 @@ import matplotlib.dates as mdates
 import datetime
 import sys
 import time
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import cm
 
 
 start_date = input('Enter a start date (yyyymmdd): ')
